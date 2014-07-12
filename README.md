@@ -1,7 +1,7 @@
-# Awesome Cache 🚀
+# Awesome Cache
 
 Delightful on-disk cache (written in Swift).
-Backed by NSCache for maximum performance and support for expiry of single objects.
+Backed by NSCache for maximum performance and support for expiry of single objects. 🚀
 
 
 ## Usage

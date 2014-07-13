@@ -82,12 +82,15 @@ class ExampleTests: XCTestCase {
 		
 		cache.setObjectForKey("blockExecuted", cacheBlock: { returnBlock in
 			executed = true
-			returnBlock("AddedString", .Never)
-		}, completion: { object, isCached in
-			XCTAssertEqual("AddedString", object, "Get cached object")
+			returnBlock("AddedString", .Never, nil)
+		}, completion: { object, isLoadedFromCache, error in
+			XCTAssertNotNil(object, "Cached object not nil")
+			XCTAssertEqual("AddedString", object!, "Get cached object")
 			
 			XCTAssertNotNil(self.cache.objectForKey("blockExecuted"), "Get cached object")
 			XCTAssertTrue(executed, "Block was executed")
+			XCTAssertFalse(isLoadedFromCache, "Object was not loaded cached")
+			XCTAssertNil(error, "Error is nil")
 		})
 	}
 	
@@ -98,13 +101,36 @@ class ExampleTests: XCTestCase {
 		
 		cache.setObjectForKey("blockNotExecuted", cacheBlock: { returnBlock in
 			executed = true
-			returnBlock("SometingElse", .Never)
-		}, completion: { object, isCached in
-			XCTAssertEqual("AddedString", object, "Get cached object")
-			
-			XCTAssertEqual("AddedString", self.cache.objectForKey("blockNotExecuted")!, "Get cached object")
+			returnBlock("SometingElse", .Never, nil)
+		}, completion: { object, isLoadedFromCache, error in
+			XCTAssertNotNil(object, "Cached object not nil")
+			XCTAssertEqual("AddedString", object!, "Get cached object")
+				
 			XCTAssertNotNil(self.cache.objectForKey("blockNotExecuted"), "Get cached object")
+			XCTAssertEqual("AddedString", self.cache.objectForKey("blockNotExecuted")!, "Get cached object")
+
 			XCTAssertFalse(executed, "Block was not executed")
+			XCTAssertTrue(isLoadedFromCache, "Object was loaded from cached")
+			XCTAssertNil(error, "Error is nil")
 		})
+	}
+	
+	
+	func testCacheBlockError() {
+		
+		cache.setObjectForKey("blockError", cacheBlock: { returnBlock in
+			let error = NSError(domain: "AwesomeCacheErrorDomain", code: 42, userInfo: nil)
+			returnBlock(nil, .Never, error)
+		}, completion: { object, isLoadedFromCache, error in
+			XCTAssertNil(object, "Cached object nil")
+			XCTAssertNil(self.cache.objectForKey("blockError"), "Get cached object")
+			
+			XCTAssertFalse(isLoadedFromCache, "Object was loaded from cached")
+			XCTAssertNotNil(error, "Error is nil")
+			XCTAssert(error!.domain == "AwesomeCacheErrorDomain", "Error domain")
+			XCTAssert(error!.code == 42, "Error code")
+		})
+		
+		
 	}
 }

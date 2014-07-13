@@ -17,6 +17,7 @@ class ExampleTests: XCTestCase {
 	
     override func setUp() {
 		cache = AwesomeCache<NSString>(name: "awesomeCache")
+		cache.removeAllObjects()
 		
 		super.setUp()
     }
@@ -38,7 +39,7 @@ class ExampleTests: XCTestCase {
 	
 	func testRemoveObject() {
 		cache.setObject("AddedString", forKey: "remove")
-		XCTAssertNotNil(cache.objectForKey("add"), "Get non-nil object")
+		XCTAssertNotNil(cache.objectForKey("remove"), "Get non-nil object")
 		XCTAssertEqual("AddedString", cache.objectForKey("remove")!, "Get non-nil object")
 		
 		cache.removeObjectForKey("remove")

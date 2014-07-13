@@ -87,17 +87,22 @@ class AwesomeCache<T: NSCoding> {
 	 *  The completion block is invoked as soon as the cacheBlock is finished and the object is cached.
 	 *
 	 *  @param key			The key for the cached object
-	 *  @param cacheBlock	This block gets called if there is no cached object or this object is already expired.
-	 *						The supplied block must be called upon completion (with the object to cache and its expiry).
-	 *  @param completaion	Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
+	 *  @param cacheBlock	This block gets called if there is no cached object or the cached object is already expired.
+	 *						The supplied block must be called upon completion (with the object to cache, its expiry).
+	 *						If an optional error is passed, the object is not cached and the completion block is called with this error.
+	 *  @param completion	Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
 	 */
-	func setObjectForKey(key: String, cacheBlock: ((T, AwesomeCacheExpiry) -> ()) -> (), completion: (T, Bool) -> ()) {
+	func setObjectForKey(key: String, cacheBlock: ((T?, AwesomeCacheExpiry, NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
 		if let object = objectForKey(key) {
-			completion(object, true)
+			completion(object, true, nil)
 		} else {
-			let cacheReturnBlock: (T, AwesomeCacheExpiry) -> () = { (obj, expires) in
-				self.setObject(obj, forKey: key, expires: expires)
-				completion(obj, false)
+			let cacheReturnBlock: (T?, AwesomeCacheExpiry, NSError?) -> () = { (obj, expires, error) in
+				if !error && obj {
+					self.setObject(obj!, forKey: key, expires: expires)
+					completion(obj, false, nil)
+				} else {
+					completion(nil, false, error)
+				}
 			}
 			cacheBlock(cacheReturnBlock)
 		}

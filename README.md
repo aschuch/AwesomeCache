@@ -38,9 +38,11 @@ cache.setObjectForKey("blockNotExecuted", cacheBlock: { returnBlock in
   let response = ...
 
   // Call returnBlock upon completion
-  returnBlock(response, .Seconds(300)) // Cache for 5 minutes
-}, completion: { object, isLoadedFromCache in
-  // object is now cached
+  returnBlock(response, .Seconds(300), nil) // Cache response for 5 minutes, no error
+}, completion: { object, isLoadedFromCache, error in
+	if !error {
+	 	// object is now cached
+	}
 })
 ```
 

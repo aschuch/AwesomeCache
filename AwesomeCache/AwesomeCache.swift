@@ -201,7 +201,10 @@ class AwesomeCache<T: NSCoding> {
 		
 		dispatch_async(diskQueue) {
 			let paths = self.fileManager.contentsOfDirectoryAtPath(self.directory, error: nil) as [String]
-			for path in paths {
+			let keys = paths.map { $0.stringByDeletingPathExtension }
+			
+			for key in keys {
+				let path = self._pathForKey(key)
 				self.fileManager.removeItemAtPath(path, error: nil)
 			}
 		}
@@ -216,7 +219,7 @@ class AwesomeCache<T: NSCoding> {
 	func removeExpiredObjects() {
 		dispatch_async(diskQueue) {
 			let paths = self.fileManager.contentsOfDirectoryAtPath(self.directory, error: nil) as [String]
-			let keys = paths.map { $0.lastPathComponent.stringByDeletingPathExtension }
+			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
 			for key in keys {
 				// `objectForKey:` deletes the object if it is expired

@@ -66,9 +66,9 @@ class AwesomeCache<T: NSCoding> {
 	}
 	
 	/**
-	 *  @param name			Name of this cache
+	 *  @param name		Name of this cache
 	 *
-	 *  @return				A new cache with the given name and the default cache directory
+	 *  @return			A new cache with the given name and the default cache directory
 	 */
 	convenience init(name: String) {
 		self.init(name: name, directory: nil)
@@ -252,16 +252,10 @@ class AwesomeCache<T: NSCoding> {
 	
 	/// @private Helper
 	
-	/**
-     *  @private
-     */
 	func _pathForKey(key: String) -> String {
 		return directory.stringByAppendingPathComponent(key).stringByAppendingPathExtension("cache")
 	}
-	
-	/**
-	 *  @private
-     */
+
 	func _expiryDateForCacheExpiry(expiry: AwesomeCacheExpiry) -> NSDate {
 		switch expiry {
 		case .Never:

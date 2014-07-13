@@ -1,7 +1,7 @@
 # Awesome Cache
 
 Delightful on-disk cache (written in Swift).
-Backed by NSCache for maximum performance and support for expiry of single objects. 🚀
+Backed by NSCache for maximum performance and support for expiry of single objects.
 
 
 ## Usage
@@ -40,7 +40,7 @@ cache.setObjectForKey("blockNotExecuted", cacheBlock: { returnBlock in
   // Call returnBlock upon completion
   returnBlock(response, .Seconds(300)) // Cache for 5 minutes
 }, completion: { object, isLoadedFromCache in
-  // object is now cached 👍
+  // object is now cached
 })
 ```
 
@@ -68,8 +68,6 @@ Alternatively, all tests can be run in the terminal using [xctool](https://githu
 ```bash
 xctool -scheme Tests -sdk iphonesimulator test
 ```
-
-Make sure to reset your Simulator before running tests.
 
 
 ## Contributing

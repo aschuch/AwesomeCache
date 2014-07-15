@@ -92,19 +92,20 @@ class AwesomeCache<T: NSCoding> {
 	 *						If an optional error is passed, the object is not cached and the completion block is called with this error.
 	 *  @param completion	Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
 	 */
-	func setObjectForKey(key: String, cacheBlock: ((T?, AwesomeCacheExpiry, NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
+	func setObjectForKey(key: String, cacheBlock: ((T, AwesomeCacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
 		if let object = objectForKey(key) {
 			completion(object, true, nil)
 		} else {
-			let cacheReturnBlock: (T?, AwesomeCacheExpiry, NSError?) -> () = { (obj, expires, error) in
-				if !error && obj {
-					self.setObject(obj!, forKey: key, expires: expires)
-					completion(obj, false, nil)
-				} else {
-					completion(nil, false, error)
-				}
+			let successBlock: (T, AwesomeCacheExpiry) -> () = { (obj, expires) in
+				self.setObject(obj, forKey: key, expires: expires)
+				completion(obj, false, nil)
 			}
-			cacheBlock(cacheReturnBlock)
+			
+			let failureBlock: (NSError?) -> () = { (error) in
+				completion(nil, false, error)
+			}
+			
+			cacheBlock(successBlock, failureBlock)
 		}
 	}
 	

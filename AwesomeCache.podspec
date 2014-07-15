@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AwesomeCache"
-  s.version      = "0.1"
+  s.version      = "0.2"
   s.summary      = "Delightful on-disk cache."
   s.homepage     = "https://github.com/aschuch/AwesomeCache"
   s.license      = { :type => "MIT", :file => "LICENSE" }

@@ -57,7 +57,7 @@ The completion block is invoked as soon as the cacheBlock is finished and the ob
 ## Installation
 
 ```bash
-pod "AwesomeCache", "~> 0.1"
+pod "AwesomeCache", "~> 0.2"
 ```
 
 

@@ -46,10 +46,10 @@ cache.setObjectForKey("blockNotExecuted", cacheBlock: { success, failure in
 })
 ```
 
-If the cache already contains an object, the completion block is called with the cached object immediately.
+If the cache already contains an object, the `completion` block is called with the cached object immediately.
 
 If no object is found or the cached object is already expired, the `cacheBlock` is called.
-You may perform any tasks (e.g. network calls) within this block. Upon completion of these tasks, make sure to call the completion block that is passed to the `cacheBlock`. The cacheBlock is not re-evaluated until the object is expired or manually deleted.
+You may perform any tasks (e.g. network calls) within this block. Upon completion of these tasks, make sure to call the `success` or `failure` block that is passed to the `cacheBlock`. The cacheBlock will not be re-evaluated until the object is expired or manually deleted.
 
 The completion block is invoked as soon as the cacheBlock is finished and the object is cached.
 

@@ -78,18 +78,18 @@ class AwesomeCache<T: NSCoding> {
 	/// Awesome caching
 	
 	/**
-	 *  Returns a cached object immediately or evaluates a cacheBlock. The cacheBlock is not re-evaluated until the object is expired or manually deleted.
+	 *  Returns a cached object immediately or evaluates a cacheBlock. The cacheBlock will not be re-evaluated until the object is expired or manually deleted.
 	 *
 	 *  If the cache already contains an object, the completion block is called with the cached object immediately.
 	 *
 	 *	If no object is found or the cached object is already expired, the `cacheBlock` is called.
-	 *	You might perform any tasks (e.g. network calls) within this block. Upon completion of these tasks, make sure to call the completion block that is passed to the `cacheBlock`. 
+	 *	You might perform any tasks (e.g. network calls) within this block. Upon completion of these tasks, make sure to call the `success` or `failure` block that is passed to the `cacheBlock`.
 	 *  The completion block is invoked as soon as the cacheBlock is finished and the object is cached.
 	 *
-	 *  @param key			The key for the cached object
+	 *  @param key			The key to lookup the cached object
 	 *  @param cacheBlock	This block gets called if there is no cached object or the cached object is already expired.
-	 *						The supplied block must be called upon completion (with the object to cache, its expiry).
-	 *						If an optional error is passed, the object is not cached and the completion block is called with this error.
+	 *						The supplied success or failure blocks must be called upon completion.
+	 *						If the error block is called, the object is not cached and the completion block is invoked with this error.
 	 *  @param completion	Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
 	 */
 	func setObjectForKey(key: String, cacheBlock: ((T, AwesomeCacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {

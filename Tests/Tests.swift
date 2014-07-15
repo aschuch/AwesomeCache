@@ -80,9 +80,9 @@ class ExampleTests: XCTestCase {
 	func testCacheBlockExecuted() {
 		var executed = false
 		
-		cache.setObjectForKey("blockExecuted", cacheBlock: { returnBlock in
+		cache.setObjectForKey("blockExecuted", cacheBlock: { successBlock, failureBlock in
 			executed = true
-			returnBlock("AddedString", .Never, nil)
+			successBlock("AddedString", .Never)
 		}, completion: { object, isLoadedFromCache, error in
 			XCTAssertNotNil(object, "Cached object not nil")
 			XCTAssertEqual("AddedString", object!, "Get cached object")
@@ -99,9 +99,9 @@ class ExampleTests: XCTestCase {
 		
 		cache.setObject("AddedString", forKey: "blockNotExecuted")
 		
-		cache.setObjectForKey("blockNotExecuted", cacheBlock: { returnBlock in
+		cache.setObjectForKey("blockNotExecuted", cacheBlock: { successBlock, failureBlock in
 			executed = true
-			returnBlock("SometingElse", .Never, nil)
+			successBlock("SometingElse", .Never)
 		}, completion: { object, isLoadedFromCache, error in
 			XCTAssertNotNil(object, "Cached object not nil")
 			XCTAssertEqual("AddedString", object!, "Get cached object")
@@ -118,9 +118,9 @@ class ExampleTests: XCTestCase {
 	
 	func testCacheBlockError() {
 		
-		cache.setObjectForKey("blockError", cacheBlock: { returnBlock in
+		cache.setObjectForKey("blockError", cacheBlock: { successBlock, failureBlock in
 			let error = NSError(domain: "AwesomeCacheErrorDomain", code: 42, userInfo: nil)
-			returnBlock(nil, .Never, error)
+			failureBlock(error)
 		}, completion: { object, isLoadedFromCache, error in
 			XCTAssertNil(object, "Cached object nil")
 			XCTAssertNil(self.cache.objectForKey("blockError"), "Get cached object")

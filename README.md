@@ -33,14 +33,14 @@ However, you are responsible to delete expired objects regularily by calling `re
 API responses are usually cached for a specific period of time. AwesomeCache provides an easy method to cache a block of asynchronous tasks.
 
 ```swift
-cache.setObjectForKey("blockNotExecuted", cacheBlock: { returnBlock in
+cache.setObjectForKey("blockNotExecuted", cacheBlock: { success, failure in
   // Perform tasks, e.g. call an API
   let response = ...
 
-  // Call returnBlock upon completion
-  returnBlock(response, .Seconds(300), nil) // Cache response for 5 minutes, no error
+  success(response, .Seconds(300)) // Cache response for 5 minutes
+  // ... or failure(error)
 }, completion: { object, isLoadedFromCache, error in
-	if !error {
+	if object {
 	 	// object is now cached
 	}
 })

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A1798301987E36D00281518 /* AwesomeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD1467F1971C2760009E65B /* AwesomeCache.swift */; };
+		1A1798311987E37A00281518 /* AwesomeCacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD146801971C2760009E65B /* AwesomeCacheObject.swift */; };
 		4D44D28D1971627700EC5FDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D44D28C1971627700EC5FDB /* AppDelegate.swift */; };
 		4D44D28F1971627700EC5FDB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D44D28E1971627700EC5FDB /* ViewController.swift */; };
 		4D44D2921971627700EC5FDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D44D2901971627700EC5FDB /* Main.storyboard */; };
@@ -273,7 +275,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A1798301987E36D00281518 /* AwesomeCache.swift in Sources */,
 				4DD146771971BFA40009E65B /* Tests.swift in Sources */,
+				1A1798311987E37A00281518 /* AwesomeCacheObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

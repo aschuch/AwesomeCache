@@ -11,6 +11,7 @@ let cache = AwesomeCache<NSString>(name: "awesomeCache")
 
 cache["name"] = "Alex"
 let name = cache["name"]
+cache["name"] = nil
 ```
 
 
@@ -33,7 +34,7 @@ However, you are responsible to delete expired objects regularily by calling `re
 API responses are usually cached for a specific period of time. AwesomeCache provides an easy method to cache a block of asynchronous tasks.
 
 ```swift
-cache.setObjectForKey("blockNotExecuted", cacheBlock: { success, failure in
+cache.setObjectForKey("name", cacheBlock: { success, failure in
   // Perform tasks, e.g. call an API
   let response = ...
 

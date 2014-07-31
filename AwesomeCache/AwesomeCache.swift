@@ -11,7 +11,7 @@ import Foundation
 /**
  *  Represents the expiry of a cached object
  */
-enum AwesomeCacheExpiry {
+public enum AwesomeCacheExpiry {
 	case Never
 	case Seconds(NSTimeInterval)
 	case Date(NSDate)
@@ -25,17 +25,16 @@ enum AwesomeCacheExpiry {
  *  Subclassing notes: This class fully supports subclassing. 
  *  The easiest way to implement a subclass is to override `objectForKey` and `setObject:forKey:expires:`, e.g. to modify values prior to reading/writing to the cache.
  */
-class AwesomeCache<T: NSCoding> {
-	let name: String		// @readonly
-	let directory: String	// @readonly
+public class AwesomeCache<T: NSCoding> {
+	public let name: String
+	public let directory: String
 	
-	// @private
-	let cache = NSCache()
-	let fileManager = NSFileManager()
-	let diskQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskQueue", DISPATCH_QUEUE_SERIAL)
+	private let cache = NSCache()
+	private let fileManager = NSFileManager()
+	private let diskQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskQueue", DISPATCH_QUEUE_SERIAL)
 	
 	
-	/// Initializers
+	// MARK: Initializers
 	
 	/**
 	 *  Designated initializer.
@@ -47,7 +46,7 @@ class AwesomeCache<T: NSCoding> {
 	 *  @return				A new cache with the given name and directory
 	 *
 	 */
-	init(name: String, directory: String?) {
+	public init(name: String, directory: String?) {
 		// Ensure directory name
 		var dir: String? = directory
 		if !dir {
@@ -70,12 +69,12 @@ class AwesomeCache<T: NSCoding> {
 	 *
 	 *  @return			A new cache with the given name and the default cache directory
 	 */
-	convenience init(name: String) {
+	public convenience init(name: String) {
 		self.init(name: name, directory: nil)
 	}
 	
 	
-	/// Awesome caching
+	// MARK: Awesome caching
 	
 	/**
 	 *  Returns a cached object immediately or evaluates a cacheBlock. The cacheBlock will not be re-evaluated until the object is expired or manually deleted.
@@ -92,7 +91,7 @@ class AwesomeCache<T: NSCoding> {
 	 *						If the error block is called, the object is not cached and the completion block is invoked with this error.
 	 *  @param completion	Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
 	 */
-	func setObjectForKey(key: String, cacheBlock: ((T, AwesomeCacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
+	public func setObjectForKey(key: String, cacheBlock: ((T, AwesomeCacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
 		if let object = objectForKey(key) {
 			completion(object, true, nil)
 		} else {
@@ -110,7 +109,7 @@ class AwesomeCache<T: NSCoding> {
 	}
 	
 	
-	/// Get object
+	// MARK: Get object
 	
 	/**
 	 *  Looks up and returns an object with the specified name if it exists.
@@ -119,7 +118,7 @@ class AwesomeCache<T: NSCoding> {
 	 *  @param name		The name of the object that should be returned
 	 *  @return			The cached object for the given name, or nil
 	 */
-	func objectForKey(key: String) -> T? {
+	public func objectForKey(key: String) -> T? {
 		var possibleObject: AwesomeCacheObject?
 				
 		// Check if object exists in local cache
@@ -128,7 +127,7 @@ class AwesomeCache<T: NSCoding> {
 		if !possibleObject {
 			// Try to load object from disk (synchronously)
 			dispatch_sync(diskQueue) {
-				let path = self._pathForKey(key)
+				let path = self.pathForKey(key)
 				if self.fileManager.fileExistsAtPath(path) {
 					possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? AwesomeCacheObject
 				}
@@ -149,7 +148,7 @@ class AwesomeCache<T: NSCoding> {
 	}
 	
 	
-	/// Set object
+	// MARK: Set object
 	
 	/**
 	 *  Adds a given object to the cache.
@@ -157,7 +156,7 @@ class AwesomeCache<T: NSCoding> {
 	 *  @param object	The object that should be cached
 	 *  @param forKey	A key that represents this object in the cache
 	 */
-	func setObject(object: T, forKey key: String) {
+	public func setObject(object: T, forKey key: String) {
 		self.setObject(object, forKey: key, expires: .Never)
 	}
 	
@@ -168,8 +167,8 @@ class AwesomeCache<T: NSCoding> {
 	 *  @param object	The object that should be cached
 	 *  @param forKey	A key that represents this object in the cache
 	 */
-	func setObject(object: T, forKey key: String, expires: AwesomeCacheExpiry) {
-		let expiryDate = _expiryDateForCacheExpiry(expires)
+	public func setObject(object: T, forKey key: String, expires: AwesomeCacheExpiry) {
+		let expiryDate = expiryDateForCacheExpiry(expires)
 		let cacheObject = AwesomeCacheObject(value: object, expiryDate: expiryDate)
 		
 		// Set object in local cache
@@ -177,24 +176,24 @@ class AwesomeCache<T: NSCoding> {
 		
 		// Write object to disk (asyncronously)
 		dispatch_async(diskQueue) {
-			let path = self._pathForKey(key)
+			let path = self.pathForKey(key)
 			NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
 		}
 	}
 	
 	
-	/// Remove objects
+	// MARK: Remove objects
 	
 	/** 
 	 *  Removes an object from the cache.
 	 *  
 	 *  @param key	The key of the object that should be removed
 	 */
-	func removeObjectForKey(key: String) {
+	public func removeObjectForKey(key: String) {
 		cache.removeObjectForKey(key)
 		
 		dispatch_async(diskQueue) {
-			let path = self._pathForKey(key)
+			let path = self.pathForKey(key)
 			self.fileManager.removeItemAtPath(path, error: nil)
 		}
 	}
@@ -202,7 +201,7 @@ class AwesomeCache<T: NSCoding> {
 	/**
 	 *  Removes all objects from the cache.
 	 */
-	func removeAllObjects() {
+	public func removeAllObjects() {
 		cache.removeAllObjects()
 		
 		dispatch_async(diskQueue) {
@@ -210,19 +209,19 @@ class AwesomeCache<T: NSCoding> {
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
 			for key in keys {
-				let path = self._pathForKey(key)
+				let path = self.pathForKey(key)
 				self.fileManager.removeItemAtPath(path, error: nil)
 			}
 		}
 	}
 	
 	
-	/// Remove Expired Objects
+	// MARK: Remove Expired Objects
 	
 	/**
 	 *  Removes all expired objects from the cache.
 	 */
-	func removeExpiredObjects() {
+	public func removeExpiredObjects() {
 		dispatch_async(diskQueue) {
 			let paths = self.fileManager.contentsOfDirectoryAtPath(self.directory, error: nil) as [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
@@ -235,9 +234,9 @@ class AwesomeCache<T: NSCoding> {
 	}
 	
 	
-	/// Subscripting
+	// MARK: Subscripting
 	
-	subscript(key: String) -> T? {
+	public subscript(key: String) -> T? {
 		get {
 			return objectForKey(key)
 		}
@@ -251,13 +250,13 @@ class AwesomeCache<T: NSCoding> {
 	}
 	
 	
-	/// @private Helper
+	// MARK: Private Helper
 	
-	func _pathForKey(key: String) -> String {
+	private func pathForKey(key: String) -> String {
 		return directory.stringByAppendingPathComponent(key).stringByAppendingPathExtension("cache")
 	}
 
-	func _expiryDateForCacheExpiry(expiry: AwesomeCacheExpiry) -> NSDate {
+	private func expiryDateForCacheExpiry(expiry: AwesomeCacheExpiry) -> NSDate {
 		switch expiry {
 		case .Never:
 			return NSDate.distantFuture() as NSDate

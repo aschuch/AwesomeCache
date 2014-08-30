@@ -27,7 +27,7 @@ public enum AwesomeCacheExpiry {
  */
 public class AwesomeCache<T: NSCoding> {
 	public let name: String
-	public let directory: String
+	public let cacheDirectory: String
 	
 	private let cache = NSCache()
 	private let fileManager = NSFileManager()
@@ -47,20 +47,19 @@ public class AwesomeCache<T: NSCoding> {
 	 *
 	 */
 	public init(name: String, directory: String?) {
-		// Ensure directory name
-		var dir: String? = directory
-		if !dir {
-			let cacheDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
-			dir = cacheDirectory.stringByAppendingFormat("/com.aschuch.cache/%@", name)
-		}
-		self.directory = dir!
-		
 		self.name = name
 		cache.name = name
 		
+		if let d = directory {
+			cacheDirectory = d
+		} else {
+			let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first as String
+			cacheDirectory = dir.stringByAppendingFormat("/com.aschuch.cache/%@", name)
+		}
+		
 		// Create directory on disk
-		if !fileManager.fileExistsAtPath(self.directory) {
-			fileManager.createDirectoryAtPath(self.directory, withIntermediateDirectories: true, attributes: nil, error: nil)
+		if !fileManager.fileExistsAtPath(cacheDirectory) {
+			fileManager.createDirectoryAtPath(cacheDirectory, withIntermediateDirectories: true, attributes: nil, error: nil)
 		}
 	}
 	
@@ -124,7 +123,7 @@ public class AwesomeCache<T: NSCoding> {
 		// Check if object exists in local cache
 		possibleObject = cache.objectForKey(key) as? AwesomeCacheObject
 		
-		if !possibleObject {
+		if possibleObject == nil {
 			// Try to load object from disk (synchronously)
 			dispatch_sync(diskQueue) {
 				let path = self.pathForKey(key)
@@ -205,7 +204,7 @@ public class AwesomeCache<T: NSCoding> {
 		cache.removeAllObjects()
 		
 		dispatch_async(diskQueue) {
-			let paths = self.fileManager.contentsOfDirectoryAtPath(self.directory, error: nil) as [String]
+			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
 			for key in keys {
@@ -223,7 +222,7 @@ public class AwesomeCache<T: NSCoding> {
 	 */
 	public func removeExpiredObjects() {
 		dispatch_async(diskQueue) {
-			let paths = self.fileManager.contentsOfDirectoryAtPath(self.directory, error: nil) as [String]
+			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
 			for key in keys {
@@ -253,7 +252,7 @@ public class AwesomeCache<T: NSCoding> {
 	// MARK: Private Helper
 	
 	private func pathForKey(key: String) -> String {
-		return directory.stringByAppendingPathComponent(key).stringByAppendingPathExtension("cache")
+		return cacheDirectory.stringByAppendingPathComponent(key).stringByAppendingPathExtension("cache")!
 	}
 
 	private func expiryDateForCacheExpiry(expiry: AwesomeCacheExpiry) -> NSDate {
@@ -266,5 +265,6 @@ public class AwesomeCache<T: NSCoding> {
 			return date
 		}
 	}
+
 }
 

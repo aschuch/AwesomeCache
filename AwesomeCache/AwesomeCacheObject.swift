@@ -43,12 +43,14 @@ class AwesomeCacheObject : NSObject, NSCoding {
 	
 	/// NSCoding
 
-	init(coder aDecoder: NSCoder!) {
-		value = aDecoder.decodeObjectForKey("value")
+	required init(coder aDecoder: NSCoder) {
+		value = aDecoder.decodeObjectForKey("value") as AnyObject!
 		expiryDate = aDecoder.decodeObjectForKey("expiryDate") as NSDate
+
+		super.init()
 	}
 	
-	func encodeWithCoder(aCoder: NSCoder!) {
+	func encodeWithCoder(aCoder: NSCoder) {
 		aCoder.encodeObject(value, forKey: "value")
 		aCoder.encodeObject(expiryDate, forKey: "expiryDate")
 	}

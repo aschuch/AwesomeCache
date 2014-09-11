@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D137EB519C1BD3300AC1050 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D137EB319C1BD3300AC1050 /* LaunchScreen.xib */; };
 		4D44D28D1971627700EC5FDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D44D28C1971627700EC5FDB /* AppDelegate.swift */; };
 		4D44D28F1971627700EC5FDB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D44D28E1971627700EC5FDB /* ViewController.swift */; };
 		4D44D2921971627700EC5FDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D44D2901971627700EC5FDB /* Main.storyboard */; };
@@ -69,6 +70,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D137EB419C1BD3300AC1050 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4D44D2871971627700EC5FDB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D44D28B1971627700EC5FDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D44D28C1971627700EC5FDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				4D44D28C1971627700EC5FDB /* AppDelegate.swift */,
 				4D44D28E1971627700EC5FDB /* ViewController.swift */,
 				4D44D2901971627700EC5FDB /* Main.storyboard */,
+				4D137EB319C1BD3300AC1050 /* LaunchScreen.xib */,
 				4D44D2931971627700EC5FDB /* Images.xcassets */,
 				4D44D28A1971627700EC5FDB /* Supporting Files */,
 			);
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D44D2921971627700EC5FDB /* Main.storyboard in Resources */,
+				4D137EB519C1BD3300AC1050 /* LaunchScreen.xib in Resources */,
 				4D44D2941971627700EC5FDB /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,6 +322,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		4D137EB319C1BD3300AC1050 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4D137EB419C1BD3300AC1050 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
 		4D44D2901971627700EC5FDB /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -410,7 +422,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -421,7 +432,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

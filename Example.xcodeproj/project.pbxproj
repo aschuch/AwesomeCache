@@ -12,9 +12,9 @@
 		4D44D28F1971627700EC5FDB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D44D28E1971627700EC5FDB /* ViewController.swift */; };
 		4D44D2921971627700EC5FDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D44D2901971627700EC5FDB /* Main.storyboard */; };
 		4D44D2941971627700EC5FDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D44D2931971627700EC5FDB /* Images.xcassets */; };
+		4DBE1B0619C318EC0055BDFE /* AwesomeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBE1B0419C318EC0055BDFE /* AwesomeCache.swift */; };
+		4DBE1B0719C318EC0055BDFE /* AwesomeCacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBE1B0519C318EC0055BDFE /* AwesomeCacheObject.swift */; };
 		4DD146771971BFA40009E65B /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD146751971BFA40009E65B /* Tests.swift */; };
-		4DD146811971C2760009E65B /* AwesomeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD1467F1971C2760009E65B /* AwesomeCache.swift */; };
-		4DD146821971C2760009E65B /* AwesomeCacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD146801971C2760009E65B /* AwesomeCacheObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,10 +78,10 @@
 		4D44D2911971627700EC5FDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4D44D2931971627700EC5FDB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4D44D2991971627700EC5FDB /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DBE1B0419C318EC0055BDFE /* AwesomeCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwesomeCache.swift; sourceTree = "<group>"; };
+		4DBE1B0519C318EC0055BDFE /* AwesomeCacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwesomeCacheObject.swift; sourceTree = "<group>"; };
 		4DD146741971BFA40009E65B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DD146751971BFA40009E65B /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		4DD1467F1971C2760009E65B /* AwesomeCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwesomeCache.swift; sourceTree = "<group>"; };
-		4DD146801971C2760009E65B /* AwesomeCacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwesomeCacheObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +105,7 @@
 		4D44D27E1971627700EC5FDB = {
 			isa = PBXGroup;
 			children = (
-				4DD1467E1971C2760009E65B /* AwesomeCache */,
+				4DBE1B0319C318EC0055BDFE /* AwesomeCache */,
 				4D44D2891971627700EC5FDB /* Example */,
 				4DD146731971BFA40009E65B /* Tests */,
 				4D44D2881971627700EC5FDB /* Products */,
@@ -142,6 +142,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4DBE1B0319C318EC0055BDFE /* AwesomeCache */ = {
+			isa = PBXGroup;
+			children = (
+				4DBE1B0419C318EC0055BDFE /* AwesomeCache.swift */,
+				4DBE1B0519C318EC0055BDFE /* AwesomeCacheObject.swift */,
+			);
+			name = AwesomeCache;
+			path = Source;
+			sourceTree = "<group>";
+		};
 		4DD146731971BFA40009E65B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,15 +159,6 @@
 				4DD146741971BFA40009E65B /* Info.plist */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		4DD1467E1971C2760009E65B /* AwesomeCache */ = {
-			isa = PBXGroup;
-			children = (
-				4DD1467F1971C2760009E65B /* AwesomeCache.swift */,
-				4DD146801971C2760009E65B /* AwesomeCacheObject.swift */,
-			);
-			path = AwesomeCache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,9 +268,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D44D28F1971627700EC5FDB /* ViewController.swift in Sources */,
-				4DD146811971C2760009E65B /* AwesomeCache.swift in Sources */,
+				4DBE1B0619C318EC0055BDFE /* AwesomeCache.swift in Sources */,
 				4D44D28D1971627700EC5FDB /* AppDelegate.swift in Sources */,
-				4DD146821971C2760009E65B /* AwesomeCacheObject.swift in Sources */,
+				4DBE1B0719C318EC0055BDFE /* AwesomeCacheObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

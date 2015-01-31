@@ -1,5 +1,7 @@
 # Awesome Cache
 
+[![Build Status](https://travis-ci.org/aschuch/AwesomeCache.svg)](https://travis-ci.org/aschuch/AwesomeCache)
+
 Delightful on-disk cache (written in Swift).
 Backed by NSCache for maximum performance and support for expiry of single objects.
 

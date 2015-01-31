@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0600"
+   LastUpgradeVersion = "0620"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D44D2861971627700EC5FDB"
-               BuildableName = "Example.app"
-               BlueprintName = "Example"
+               BlueprintIdentifier = "4DC91FA11A7C54B200C81E10"
+               BuildableName = "AwesomeCacheTests.xctest"
+               BlueprintName = "AwesomeCacheTests"
                ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D44D2981971627700EC5FDB"
-               BuildableName = "Tests.xctest"
-               BlueprintName = "Tests"
+               BlueprintIdentifier = "4DC91FA11A7C54B200C81E10"
+               BuildableName = "AwesomeCacheTests.xctest"
+               BlueprintName = "AwesomeCacheTests"
                ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D44D2861971627700EC5FDB"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "4DC91FA11A7C54B200C81E10"
+            BuildableName = "AwesomeCacheTests.xctest"
+            BlueprintName = "AwesomeCacheTests"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -58,15 +58,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D44D2861971627700EC5FDB"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "4DC91FA11A7C54B200C81E10"
+            BuildableName = "AwesomeCacheTests.xctest"
+            BlueprintName = "AwesomeCacheTests"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -76,15 +76,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D44D2861971627700EC5FDB"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "4DC91FA11A7C54B200C81E10"
+            BuildableName = "AwesomeCacheTests.xctest"
+            BlueprintName = "AwesomeCacheTests"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

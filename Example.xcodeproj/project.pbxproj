@@ -17,8 +17,8 @@
 		4DC91FAC1A7C54B200C81E10 /* AwesomeCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FAB1A7C54B200C81E10 /* AwesomeCacheTests.swift */; };
 		4DC91FAF1A7C54B200C81E10 /* AwesomeCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC91F981A7C54B200C81E10 /* AwesomeCache.framework */; };
 		4DC91FB01A7C54B200C81E10 /* AwesomeCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC91F981A7C54B200C81E10 /* AwesomeCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4DC91FBA1A7C552900C81E10 /* AwesomeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* AwesomeCache.swift */; };
-		4DC91FBB1A7C552900C81E10 /* AwesomeCacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* AwesomeCacheObject.swift */; };
+		4DC91FBA1A7C552900C81E10 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
+		4DC91FBB1A7C552900C81E10 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,8 +73,8 @@
 		4DC91FA21A7C54B200C81E10 /* AwesomeCacheTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwesomeCacheTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DC91FAA1A7C54B200C81E10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DC91FAB1A7C54B200C81E10 /* AwesomeCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwesomeCacheTests.swift; sourceTree = "<group>"; };
-		4DC91FB81A7C552900C81E10 /* AwesomeCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwesomeCache.swift; sourceTree = "<group>"; };
-		4DC91FB91A7C552900C81E10 /* AwesomeCacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwesomeCacheObject.swift; sourceTree = "<group>"; };
+		4DC91FB81A7C552900C81E10 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		4DC91FB91A7C552900C81E10 /* CacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,8 +148,8 @@
 		4DC91F991A7C54B200C81E10 /* AwesomeCache */ = {
 			isa = PBXGroup;
 			children = (
-				4DC91FB81A7C552900C81E10 /* AwesomeCache.swift */,
-				4DC91FB91A7C552900C81E10 /* AwesomeCacheObject.swift */,
+				4DC91FB81A7C552900C81E10 /* Cache.swift */,
+				4DC91FB91A7C552900C81E10 /* CacheObject.swift */,
 				4DC91F9C1A7C54B200C81E10 /* AwesomeCache.h */,
 				4DC91F9A1A7C54B200C81E10 /* Supporting Files */,
 			);
@@ -333,8 +333,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DC91FBA1A7C552900C81E10 /* AwesomeCache.swift in Sources */,
-				4DC91FBB1A7C552900C81E10 /* AwesomeCacheObject.swift in Sources */,
+				4DC91FBA1A7C552900C81E10 /* Cache.swift in Sources */,
+				4DC91FBB1A7C552900C81E10 /* CacheObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,7 +420,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -456,7 +456,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

@@ -7,7 +7,7 @@ Backed by NSCache for maximum performance and support for expiry of single objec
 ## Usage
 
 ```swift
-let cache = AwesomeCache<NSString>(name: "awesomeCache")
+let cache = Cache<NSString>(name: "awesomeCache")
 
 cache["name"] = "Alex"
 let name = cache["name"]
@@ -57,19 +57,40 @@ The completion block is invoked as soon as the cacheBlock is finished and the ob
 
 ## Installation
 
-<strike>pod "AwesomeCache", "~> 0.2"</strike>
+#### Carthage
 
-For now, just drag and drop the two classes in the `Source` folder into your project.
+Add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
 
+```
+github "aschuch/AwesomeCache"
+```
+
+Then run `carthage update`.
+
+#### Cocoapods
+
+**NOTE:** Cocoapods does not officially support Swift projects yet.  Make sure you have Cocoapods 0.36 beta installed by running `gem install cocoapods --pre`.
+
+Add the following line to your Podfile.
+
+```
+pod "AwesomeCache", "~> 1.0"
+```
+
+Then run `pod install` with Cocoapods 0.36 or newer.
+
+#### Manually
+
+Just drag and drop the two `.swift` files in the `AwesomeCache` folder into your project.
 
 ## Tests
 
 Open the Xcode project and press `⌘-U` to run the tests.
 
-Alternatively, all tests can be run in the terminal using [xctool](https://github.com/facebook/xctool) (once it is ready for Xcode 6).
+Alternatively, all tests can be run in the terminal using [xctool](https://github.com/facebook/xctool).
 
 ```bash
-xctool -scheme Tests -sdk iphonesimulator test
+xctool -scheme AwesomeCacheTests -sdk iphonesimulator test
 ```
 
 ## Contributing

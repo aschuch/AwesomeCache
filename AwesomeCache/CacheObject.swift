@@ -14,7 +14,7 @@ import Foundation
  * NOTE: It is currently not possible to use generics with a subclass of NSObject
  *		 However, NSKeyedArchiver needs a concrete subclass of NSObject to work correctly
  */
-class AwesomeCacheObject : NSObject, NSCoding {
+class CacheObject : NSObject, NSCoding {
 	let value: AnyObject
 	let expiryDate: NSDate
 	

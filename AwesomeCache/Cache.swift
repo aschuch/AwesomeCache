@@ -11,7 +11,7 @@ import Foundation
 /**
  *  Represents the expiry of a cached object
  */
-public enum AwesomeCacheExpiry {
+public enum CacheExpiry {
 	case Never
 	case Seconds(NSTimeInterval)
 	case Date(NSDate)
@@ -25,7 +25,7 @@ public enum AwesomeCacheExpiry {
  *  Subclassing notes: This class fully supports subclassing. 
  *  The easiest way to implement a subclass is to override `objectForKey` and `setObject:forKey:expires:`, e.g. to modify values prior to reading/writing to the cache.
  */
-public class AwesomeCache<T: NSCoding> {
+public class Cache<T: NSCoding> {
 	public let name: String
 	public let cacheDirectory: String
 	
@@ -90,11 +90,11 @@ public class AwesomeCache<T: NSCoding> {
 	 *						If the error block is called, the object is not cached and the completion block is invoked with this error.
 	 *  @param completion	Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
 	 */
-	public func setObjectForKey(key: String, cacheBlock: ((T, AwesomeCacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
+	public func setObjectForKey(key: String, cacheBlock: ((T, CacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
 		if let object = objectForKey(key) {
 			completion(object, true, nil)
 		} else {
-			let successBlock: (T, AwesomeCacheExpiry) -> () = { (obj, expires) in
+			let successBlock: (T, CacheExpiry) -> () = { (obj, expires) in
 				self.setObject(obj, forKey: key, expires: expires)
 				completion(obj, false, nil)
 			}
@@ -118,17 +118,17 @@ public class AwesomeCache<T: NSCoding> {
 	 *  @return			The cached object for the given name, or nil
 	 */
 	public func objectForKey(key: String) -> T? {
-		var possibleObject: AwesomeCacheObject?
+		var possibleObject: CacheObject?
 				
 		// Check if object exists in local cache
-		possibleObject = cache.objectForKey(key) as? AwesomeCacheObject
+		possibleObject = cache.objectForKey(key) as? CacheObject
 		
 		if possibleObject == nil {
 			// Try to load object from disk (synchronously)
 			dispatch_sync(diskQueue) {
 				let path = self.pathForKey(key)
 				if self.fileManager.fileExistsAtPath(path) {
-					possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? AwesomeCacheObject
+					possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
 				}
 			}
 		}
@@ -166,9 +166,9 @@ public class AwesomeCache<T: NSCoding> {
 	 *  @param object	The object that should be cached
 	 *  @param forKey	A key that represents this object in the cache
 	 */
-	public func setObject(object: T, forKey key: String, expires: AwesomeCacheExpiry) {
+	public func setObject(object: T, forKey key: String, expires: CacheExpiry) {
 		let expiryDate = expiryDateForCacheExpiry(expires)
-		let cacheObject = AwesomeCacheObject(value: object, expiryDate: expiryDate)
+		let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
 		
 		// Set object in local cache
 		cache.setObject(cacheObject, forKey: key)
@@ -255,7 +255,7 @@ public class AwesomeCache<T: NSCoding> {
 		return cacheDirectory.stringByAppendingPathComponent(key).stringByAppendingPathExtension("cache")!
 	}
 
-	private func expiryDateForCacheExpiry(expiry: AwesomeCacheExpiry) -> NSDate {
+	private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
 		switch expiry {
 		case .Never:
 			return NSDate.distantFuture() as NSDate

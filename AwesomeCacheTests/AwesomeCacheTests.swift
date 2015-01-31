@@ -12,10 +12,10 @@ import AwesomeCache
 
 class AwesomeCacheTests: XCTestCase {
     
-    var cache: AwesomeCache<NSString> = AwesomeCache<NSString>(name: "awesomeCache")
+    var cache: Cache<NSString> = Cache<NSString>(name: "awesomeCache")
     
     override func setUp() {
-        cache = AwesomeCache<NSString>(name: "awesomeCache")
+        cache = Cache<NSString>(name: "awesomeCache")
         cache.removeAllObjects()
         
         super.setUp()

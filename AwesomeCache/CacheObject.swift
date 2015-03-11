@@ -45,7 +45,7 @@ class CacheObject : NSObject, NSCoding {
 
 	required init(coder aDecoder: NSCoder) {
 		value = aDecoder.decodeObjectForKey("value") as AnyObject!
-		expiryDate = aDecoder.decodeObjectForKey("expiryDate") as NSDate
+		expiryDate = aDecoder.decodeObjectForKey("expiryDate") as! NSDate
 
 		super.init()
 	}

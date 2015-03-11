@@ -53,7 +53,7 @@ public class Cache<T: NSCoding> {
 		if let d = directory {
 			cacheDirectory = d
 		} else {
-			let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first as String
+			let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first as! String
 			cacheDirectory = dir.stringByAppendingFormat("/com.aschuch.cache/%@", name)
 		}
 		
@@ -204,7 +204,7 @@ public class Cache<T: NSCoding> {
 		cache.removeAllObjects()
 		
 		dispatch_async(diskQueue) {
-			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as [String]
+			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as! [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
 			for key in keys {
@@ -222,7 +222,7 @@ public class Cache<T: NSCoding> {
 	 */
 	public func removeExpiredObjects() {
 		dispatch_async(diskQueue) {
-			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as [String]
+			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as! [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
 			for key in keys {
@@ -258,7 +258,7 @@ public class Cache<T: NSCoding> {
 	private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
 		switch expiry {
 		case .Never:
-			return NSDate.distantFuture() as NSDate
+			return NSDate.distantFuture() as! NSDate
 		case .Seconds(let seconds):
 			return NSDate().dateByAddingTimeInterval(seconds)
 		case .Date(let date):

@@ -58,6 +58,8 @@ The completion block is invoked as soon as the cacheBlock is finished and the ob
 
 ## Installation
 
+The master branch of AwesomeCache is ready for swift 1.2. In case you are still on 1.1, please refer to the `swift-1.1` tag.
+
 #### Carthage
 
 Add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).

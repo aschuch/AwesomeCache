@@ -17,11 +17,11 @@ class ViewController: UIViewController {
                             
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		textView.text = cache["myText"]
+		textView.text = (cache["myText"] as? String) ?? ""
 	}
     
     @IBAction func reloadData(sender: AnyObject?) {
-        textView.text = cache["myText"]
+        textView.text = (cache["myText"] as? String) ?? ""
     }
     
     @IBAction func saveInCache(sender: AnyObject?) {

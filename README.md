@@ -16,8 +16,6 @@ let name = cache["name"]
 cache["name"] = nil
 ```
 
-* Don't forget to `import AwesomeCache` into you _swift_ file.
-
 ### Cache expiry
 
 Objects can also be cached for a certain period of time.

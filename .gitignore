@@ -1,3 +1,5 @@
+.DS_Store
+
 # Xcode
 #
 build/
@@ -17,4 +19,6 @@ DerivedData
 *.ipa
 *.xcuserstate
 
-.DS_Store
+# Carthage
+Carthage/Checkouts
+Carthage/Build

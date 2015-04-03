@@ -3,6 +3,7 @@
 <!--
 [![Build Status](https://travis-ci.org/aschuch/AwesomeCache.svg)](https://travis-ci.org/aschuch/AwesomeCache)
 -->
+![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)
 
 Delightful on-disk cache (written in Swift).
 Backed by NSCache for maximum performance and support for expiry of single objects.

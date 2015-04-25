@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author                = { "Alexander Schuch" => "alexander@schuch.me" }
   s.social_media_url      = "http://twitter.com/schuchalexander"
   s.platform              = :ios
-  s.ios.deployment_target = "7.1"
+  s.ios.deployment_target = "8.0"
   s.source                = { :git => "https://github.com/aschuch/AwesomeCache.git", :tag => s.version }
   s.requires_arc          = true
   s.source_files          = "AwesomeCache/Cache.swift", "AwesomeCache/CacheObject.swift"

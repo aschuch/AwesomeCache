@@ -33,12 +33,9 @@ class CacheObject : NSObject, NSCoding {
      *  Returns true if this object is expired.
 	 *  Expiry of the object is determined by its expiryDate.
      */
-	func isExpired() -> Bool {
-		let expires = expiryDate.timeIntervalSinceNow
-		let now = NSDate().timeIntervalSinceNow
-		
-		return now > expires
-	}
+    func isExpired() -> Bool {
+        return expiryDate.isInThePast
+    }
 	
 	
 	/// NSCoding
@@ -54,4 +51,10 @@ class CacheObject : NSObject, NSCoding {
 		aCoder.encodeObject(value, forKey: "value")
 		aCoder.encodeObject(expiryDate, forKey: "expiryDate")
 	}
+}
+
+extension NSDate {
+    var isInThePast: Bool {
+        return self.timeIntervalSinceNow < 0
+    }
 }

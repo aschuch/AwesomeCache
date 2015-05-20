@@ -18,20 +18,21 @@ class CacheObject : NSObject, NSCoding {
 	let value: AnyObject
 	let expiryDate: NSDate
 	
-	/**
-	 *  Designated initializer. 
-	 *
-     *  @param value			An object that should be cached
-	 *  @param expiryDate	The expiry date of the given value
+    /**
+     * Designated initializer.
+     *
+     * :param: value      An object that should be cached
+     * :param: expiryDate The expiry date of the given value
      */
 	init(value: AnyObject, expiryDate: NSDate) {
 		self.value = value
 		self.expiryDate = expiryDate
 	}
 	
-	/**
-     *  Returns true if this object is expired.
-	 *  Expiry of the object is determined by its expiryDate.
+    /**
+     * Determines if cached object is expired
+     *
+     * :returns: True If objects expiry date has passed
      */
     func isExpired() -> Bool {
         return expiryDate.isInThePast

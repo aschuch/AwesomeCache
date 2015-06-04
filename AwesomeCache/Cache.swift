@@ -31,7 +31,8 @@ public class Cache<T: NSCoding> {
 	
 	private let cache = NSCache()
 	private let fileManager = NSFileManager()
-	private let diskQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskQueue", DISPATCH_QUEUE_SERIAL)
+	private let diskWriteQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskWriteQueue", DISPATCH_QUEUE_SERIAL)
+	private let diskReadQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskReadQueue", DISPATCH_QUEUE_SERIAL)
 	
 	
 	// MARK: Initializers
@@ -125,7 +126,7 @@ public class Cache<T: NSCoding> {
 		
 		if possibleObject == nil {
 			// Try to load object from disk (synchronously)
-			dispatch_sync(diskQueue) {
+			dispatch_sync(diskReadQueue) {
 				let path = self.pathForKey(key)
 				if self.fileManager.fileExistsAtPath(path) {
 					possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
@@ -174,7 +175,7 @@ public class Cache<T: NSCoding> {
 		cache.setObject(cacheObject, forKey: key)
 		
 		// Write object to disk (asyncronously)
-		dispatch_async(diskQueue) {
+		dispatch_async(diskWriteQueue) {
 			let path = self.pathForKey(key)
 			NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
 		}
@@ -191,7 +192,7 @@ public class Cache<T: NSCoding> {
 	public func removeObjectForKey(key: String) {
 		cache.removeObjectForKey(key)
 		
-		dispatch_async(diskQueue) {
+		dispatch_async(diskWriteQueue) {
 			let path = self.pathForKey(key)
 			self.fileManager.removeItemAtPath(path, error: nil)
 		}
@@ -203,7 +204,7 @@ public class Cache<T: NSCoding> {
 	public func removeAllObjects() {
 		cache.removeAllObjects()
 		
-		dispatch_async(diskQueue) {
+		dispatch_async(diskWriteQueue) {
 			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as! [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			
@@ -221,7 +222,7 @@ public class Cache<T: NSCoding> {
 	 *  Removes all expired objects from the cache.
 	 */
 	public func removeExpiredObjects() {
-		dispatch_async(diskQueue) {
+		dispatch_async(diskWriteQueue) {
 			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as! [String]
 			let keys = paths.map { $0.stringByDeletingPathExtension }
 			

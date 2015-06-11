@@ -54,6 +54,13 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNil(cache["addSubscript"], "Get deleted object via subscript")
     }
     
+    func testInvalidKey() {
+        let key = "//$%foobar--893"
+        cache.setObject("AddedString", forKey: key)
+        XCTAssertNotNil(cache.objectForKey(key), "Get non-nil object")
+        XCTAssertEqual("AddedString", cache.objectForKey(key)!, "Get non-nil object")
+    }
+    
     func testObjectExpiry() {
         cache.setObject("NeverExpires", forKey: "never", expires: .Never)
         cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))

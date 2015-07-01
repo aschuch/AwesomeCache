@@ -47,7 +47,7 @@ public class Cache<T: NSCoding> {
 	 *  @return				A new cache with the given name and directory
 	 *
 	 */
-	public init(name: String, directory: String?) {
+	public init(name: String, directory: String?) throws {
 		self.name = name
 		cache.name = name
 		
@@ -60,9 +60,7 @@ public class Cache<T: NSCoding> {
 		
 		// Create directory on disk
 		if !fileManager.fileExistsAtPath(cacheDirectory) {
-			do {
-				try fileManager.createDirectoryAtPath(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
-			} catch _ {}
+			try fileManager.createDirectoryAtPath(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
 		}
 	}
 	
@@ -71,8 +69,8 @@ public class Cache<T: NSCoding> {
 	 *
 	 *  @return			A new cache with the given name and the default cache directory
 	 */
-	public convenience init(name: String) {
-		self.init(name: name, directory: nil)
+	public convenience init(name: String) throws {
+		try self.init(name: name, directory: nil)
 	}
 	
 	

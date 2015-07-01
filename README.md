@@ -12,11 +12,15 @@ Backed by NSCache for maximum performance and support for expiry of single objec
 ## Usage
 
 ```swift
-let cache = Cache<NSString>(name: "awesomeCache")
+ do {
+    let cache = try Cache<NSString>(name: "awesomeCache")
 
-cache["name"] = "Alex"
-let name = cache["name"]
-cache["name"] = nil
+    cache["name"] = "Alex"
+	let name = cache["name"]
+	cache["name"] = nil
+} catch {
+    print("unable to instantiate Cache with error: \(error)")
+}
 ```
 
 ### Cache expiry

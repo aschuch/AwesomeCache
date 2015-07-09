@@ -33,7 +33,7 @@ public class Cache<T: NSCoding> {
 	private let fileManager = NSFileManager()
 	private let diskWriteQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskWriteQueue", DISPATCH_QUEUE_SERIAL)
 	private let diskReadQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskReadQueue", DISPATCH_QUEUE_SERIAL)
-	
+	private var observer: NSObjectProtocol!
 	
 	// MARK: Initializers
 	
@@ -62,6 +62,13 @@ public class Cache<T: NSCoding> {
 		if !fileManager.fileExistsAtPath(cacheDirectory) {
 			fileManager.createDirectoryAtPath(cacheDirectory, withIntermediateDirectories: true, attributes: nil, error: nil)
 		}
+		
+		let notifications = NSNotificationCenter.defaultCenter()
+	        observer = notifications.addObserverForName(UIApplicationDidReceiveMemoryWarningNotification, object: nil, queue: NSOperationQueue.mainQueue(),
+	            usingBlock: { [unowned self] (_) -> Void in
+	                self.onMemoryWarning()
+	            }
+	        )
 	}
 	
 	/**
@@ -71,6 +78,13 @@ public class Cache<T: NSCoding> {
 	 */
 	public convenience init(name: String) {
 		self.init(name: name, directory: nil)
+	}
+	
+	// MARK: deinit
+    
+    deinit {
+		let notifications = NSNotificationCenter.defaultCenter()
+	    notifications.removeObserver(observer, name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
 	}
 	
 	
@@ -273,6 +287,12 @@ public class Cache<T: NSCoding> {
 			return date
 		}
 	}
-
+	
+	
+    // MARKS: Notifications
+    
+    func onMemoryWarning() {
+        self.cache.removeAllObjects()
+    }
 }
 

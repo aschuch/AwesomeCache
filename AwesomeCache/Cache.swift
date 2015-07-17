@@ -200,8 +200,10 @@ public class Cache<T: NSCoding> {
 	
 	/**
 	 *  Removes all objects from the cache.
+	 *
+	 *  @param completion	Called as soon as all cached objects are removed from disk.
 	 */
-	public func removeAllObjects() {
+	public func removeAllObjects(completion: (() -> Void)? = nil) {
 		cache.removeAllObjects()
 		
 		dispatch_async(diskWriteQueue) {
@@ -211,6 +213,10 @@ public class Cache<T: NSCoding> {
 			for key in keys {
 				let path = self.pathForKey(key)
 				self.fileManager.removeItemAtPath(path, error: nil)
+			}
+
+			dispatch_async(dispatch_get_main_queue()) {
+				completion?()
 			}
 		}
 	}

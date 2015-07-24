@@ -44,6 +44,27 @@ class AwesomeCacheTests: XCTestCase {
         cache.removeObjectForKey("remove")
         XCTAssertNil(cache.objectForKey("remove"), "Get deleted object")
     }
+
+    func testRemoveAllObjects() {
+        cache.setObject("AddedString 1", forKey: "remove 1")
+        cache.setObject("AddedString 2", forKey: "remove 2")
+        XCTAssertNotNil(cache.objectForKey("remove 1"), "Get first non-nil object")
+        XCTAssertNotNil(cache.objectForKey("remove 2"), "Get second non-nil object")
+
+        let expectation = expectationWithDescription("Remove All Objects")
+
+        cache.removeAllObjects {
+            XCTAssertNil(self.cache.objectForKey("remove 1"), "Get first deleted object")
+            XCTAssertNil(self.cache.objectForKey("remove 2"), "Get second deleted object")
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(4) { error in
+            if let error = error {
+                print("\n\n\nError: \(error.localizedDescription)\n\n\n")
+            }
+        }
+    }
     
     func testSubscripting() {
         cache["addSubscript"] = "AddedString"

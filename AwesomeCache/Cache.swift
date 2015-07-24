@@ -200,8 +200,10 @@ public class Cache<T: NSCoding> {
 	
 	/**
 	 *  Removes all objects from the cache.
+	 *
+	 *  @param completion	Called as soon as all cached objects are removed from disk.
 	 */
-	public func removeAllObjects() {
+	public func removeAllObjects(completion: (() -> Void)? = nil) {
 		cache.removeAllObjects()
 		
 		dispatch_async(diskWriteQueue) {
@@ -211,6 +213,10 @@ public class Cache<T: NSCoding> {
 			for key in keys {
 				let path = self.pathForKey(key)
 				self.fileManager.removeItemAtPath(path, error: nil)
+			}
+
+			dispatch_async(dispatch_get_main_queue()) {
+				completion?()
 			}
 		}
 	}
@@ -253,15 +259,15 @@ public class Cache<T: NSCoding> {
 	// MARK: Private Helper
 	
 	private func pathForKey(key: String) -> String {
-        let k = sanitizedKey(key)
+		let k = sanitizedKey(key)
 		return cacheDirectory.stringByAppendingPathComponent(k).stringByAppendingPathExtension("cache")!
 	}
-    
-    private func sanitizedKey(key: String) -> String {
-        let regex = NSRegularExpression(pattern: "[^a-zA-Z0-9_]+", options: NSRegularExpressionOptions(), error: nil)!
-        let range = NSRange(location: 0, length: count(key))
-        return regex.stringByReplacingMatchesInString(key, options: NSMatchingOptions(), range: range, withTemplate: "-")
-    }
+	
+	private func sanitizedKey(key: String) -> String {
+		let regex = NSRegularExpression(pattern: "[^a-zA-Z0-9_]+", options: NSRegularExpressionOptions(), error: nil)!
+		let range = NSRange(location: 0, length: count(key))
+		return regex.stringByReplacingMatchesInString(key, options: NSMatchingOptions(), range: range, withTemplate: "-")
+	}
 
 	private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
 		switch expiry {

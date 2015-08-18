@@ -1,8 +1,6 @@
 # Awesome Cache
 
-<!--
 [![Build Status](https://travis-ci.org/aschuch/AwesomeCache.svg)](https://travis-ci.org/aschuch/AwesomeCache)
--->
 ![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)
 
 Delightful on-disk cache (written in Swift).
@@ -74,8 +72,6 @@ github "aschuch/AwesomeCache"
 Then run `carthage update`.
 
 #### Cocoapods
-
-**NOTE:** Cocoapods does not officially support Swift projects yet.  Make sure you have Cocoapods 0.36 beta installed by running `gem install cocoapods --pre`.
 
 Add the following line to your Podfile.
 

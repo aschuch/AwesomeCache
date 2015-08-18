@@ -54,13 +54,16 @@ public class Cache<T: NSCoding> {
 		if let d = directory {
 			cacheDirectory = d
 		} else {
-			let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first as! String
-			cacheDirectory = dir.stringByAppendingFormat("/com.aschuch.cache/%@", name)
+			let dir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true).first
+			cacheDirectory = dir!.stringByAppendingFormat("/com.aschuch.cache/%@", name)
 		}
 		
 		// Create directory on disk
 		if !fileManager.fileExistsAtPath(cacheDirectory) {
-			fileManager.createDirectoryAtPath(cacheDirectory, withIntermediateDirectories: true, attributes: nil, error: nil)
+			do {
+				try fileManager.createDirectoryAtPath(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+			} catch _ {
+			}
 		}
 	}
 	
@@ -194,7 +197,10 @@ public class Cache<T: NSCoding> {
 		
 		dispatch_async(diskWriteQueue) {
 			let path = self.pathForKey(key)
-			self.fileManager.removeItemAtPath(path, error: nil)
+			do {
+				try self.fileManager.removeItemAtPath(path)
+			} catch _ {
+			}
 		}
 	}
 	
@@ -207,12 +213,15 @@ public class Cache<T: NSCoding> {
 		cache.removeAllObjects()
 		
 		dispatch_async(diskWriteQueue) {
-			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as! [String]
-			let keys = paths.map { $0.stringByDeletingPathExtension }
+			let paths = try! self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory) 
+			let keys = paths.map { ($0 as NSString).stringByDeletingPathExtension }
 			
 			for key in keys {
 				let path = self.pathForKey(key)
-				self.fileManager.removeItemAtPath(path, error: nil)
+				do {
+					try self.fileManager.removeItemAtPath(path)
+				} catch _ {
+				}
 			}
 
 			dispatch_async(dispatch_get_main_queue()) {
@@ -229,8 +238,8 @@ public class Cache<T: NSCoding> {
 	 */
 	public func removeExpiredObjects() {
 		dispatch_async(diskWriteQueue) {
-			let paths = self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory, error: nil) as! [String]
-			let keys = paths.map { $0.stringByDeletingPathExtension }
+			let paths = try! self.fileManager.contentsOfDirectoryAtPath(self.cacheDirectory) 
+			let keys = paths.map { ($0 as NSString).stringByDeletingPathExtension }
 			
 			for key in keys {
 				// `objectForKey:` deletes the object if it is expired
@@ -260,19 +269,20 @@ public class Cache<T: NSCoding> {
 	
 	private func pathForKey(key: String) -> String {
 		let k = sanitizedKey(key)
-		return cacheDirectory.stringByAppendingPathComponent(k).stringByAppendingPathExtension("cache")!
+        let dir = (cacheDirectory as NSString).stringByAppendingPathComponent(k) as NSString
+		return dir.stringByAppendingPathExtension("cache")!
 	}
 	
 	private func sanitizedKey(key: String) -> String {
-		let regex = NSRegularExpression(pattern: "[^a-zA-Z0-9_]+", options: NSRegularExpressionOptions(), error: nil)!
-		let range = NSRange(location: 0, length: count(key))
+		let regex = try! NSRegularExpression(pattern: "[^a-zA-Z0-9_]+", options: NSRegularExpressionOptions())
+		let range = NSRange(location: 0, length: key.characters.count)
 		return regex.stringByReplacingMatchesInString(key, options: NSMatchingOptions(), range: range, withTemplate: "-")
 	}
 
 	private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
 		switch expiry {
 		case .Never:
-			return NSDate.distantFuture() as! NSDate
+			return NSDate.distantFuture() 
 		case .Seconds(let seconds):
 			return NSDate().dateByAddingTimeInterval(seconds)
 		case .Date(let date):

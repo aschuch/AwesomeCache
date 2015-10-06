@@ -18,7 +18,7 @@ public class Cache<T: NSCoding> {
 	public let name: String
 	public let cacheDirectory: NSURL
 	
-	private let cache = NSCache()
+	internal let cache = NSCache() // marked internal for testing
 	private let fileManager = NSFileManager()
 	private let diskWriteQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskWriteQueue", DISPATCH_QUEUE_SERIAL)
 	private let diskReadQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskReadQueue", DISPATCH_QUEUE_SERIAL)
@@ -41,7 +41,7 @@ public class Cache<T: NSCoding> {
 			cacheDirectory = d
 		} else {
             let url = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first!
-			cacheDirectory = url.URLByAppendingPathComponent("/com.aschuch.cache/\(name)")
+			cacheDirectory = url.URLByAppendingPathComponent("com.aschuch.cache/\(name)")
 		}
 		
 		// Create directory on disk if needed
@@ -109,7 +109,7 @@ public class Cache<T: NSCoding> {
 		if possibleObject == nil {
 			// Try to load object from disk (synchronously)
 			dispatch_sync(diskReadQueue) {
-				let path = self.urlForKey(key).absoluteString
+				let path = self.urlForKey(key).path!
 				if self.fileManager.fileExistsAtPath(path) {
 					possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
 				}
@@ -133,31 +133,30 @@ public class Cache<T: NSCoding> {
 	// MARK: Set object
 	
 	/// Adds a given object to the cache.
-	///
-	/// - parameter object:	The object that should be cached
-	/// - parameter forKey:	A key that represents this object in the cache
-	public func setObject(object: T, forKey key: String) {
-		self.setObject(object, forKey: key, expires: .Never)
-	}
-	
-	/// Adds a given object to the cache.
 	/// The object is automatically marked as expired as soon as its expiry date is reached.
 	///
 	/// - parameter object:	The object that should be cached
 	/// - parameter forKey:	A key that represents this object in the cache
-	public func setObject(object: T, forKey key: String, expires: CacheExpiry) {
-		let expiryDate = expiryDateForCacheExpiry(expires)
-		let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
-		
-		// Set object in local cache
-		cache.setObject(cacheObject, forKey: key)
-		
-		// Write object to disk (asyncronously)
-		dispatch_async(diskWriteQueue) {
-			let url = self.urlForKey(key)
-			NSKeyedArchiver.archiveRootObject(cacheObject, toFile: url.absoluteString)
-		}
-	}
+    /// - parameter expires: The CacheExpiry that indicates when the given object should be expired
+    public func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never) {
+        setObject(object, forKey: key, expires: expires, completion: { })
+    }
+    
+    /// For internal testing only, might add this to the public API if needed
+    internal func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never, completion: () -> ()) {
+        let expiryDate = expiryDateForCacheExpiry(expires)
+        let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
+        
+        // Set object in local cache
+        cache.setObject(cacheObject, forKey: key)
+        
+        // Write object to disk (asyncronously)
+        dispatch_async(diskWriteQueue) {
+            let path = self.urlForKey(key).path!
+            NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
+            completion()
+        }
+    }
 	
 	
 	// MARK: Remove objects
@@ -234,7 +233,7 @@ public class Cache<T: NSCoding> {
     
     private func allKeys() -> [String] {
         let urls = try? self.fileManager.contentsOfDirectoryAtURL(self.cacheDirectory, includingPropertiesForKeys: nil, options: [])
-        return urls?.flatMap { $0.URLByDeletingPathExtension?.absoluteString } ?? []
+        return urls?.flatMap { $0.URLByDeletingPathExtension?.lastPathComponent } ?? []
     }
 	
 	private func urlForKey(key: String) -> NSURL {

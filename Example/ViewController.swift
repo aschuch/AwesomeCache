@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var textView: UITextView!
     
-    let cache = Cache<NSString>(name: "AwesomeCache")
+    let cache = try! Cache<NSString>(name: "AwesomeCache")
                             
 	override func viewDidLoad() {
 		super.viewDidLoad()

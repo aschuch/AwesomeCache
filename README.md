@@ -10,11 +10,15 @@ Backed by NSCache for maximum performance and support for expiry of single objec
 ## Usage
 
 ```swift
-let cache = Cache<NSString>(name: "awesomeCache")
+do {
+    let cache = try Cache<NSString>(name: "awesomeCache")
 
-cache["name"] = "Alex"
-let name = cache["name"]
-cache["name"] = nil
+    cache["name"] = "Alex"
+    let name = cache["name"]
+    cache["name"] = nil
+} catch _ {
+    print("Something went wrong :(")
+}
 ```
 
 ### Cache expiry
@@ -28,7 +32,7 @@ cache.setObject("Alex", forKey: "name", expires: .Date(NSDate(timeIntervalSince1
 ```
 
 If an object is accessed after its expiry date, it is automatically removed from the cache and deleted from disk.
-However, you are responsible to delete expired objects regularily by calling `removeExpiredObjects` (e.g. on app launch).
+However, you are responsible to delete expired objects regularly by calling `removeExpiredObjects` (e.g. on app launch).
 
 
 ### Awesome API Caching
@@ -59,14 +63,12 @@ The completion block is invoked as soon as the cacheBlock is finished and the ob
 
 ## Installation
 
-The master branch of AwesomeCache is ready for swift 1.2. In case you are still on 1.1, please refer to the `swift-1.1` tag.
-
 #### Carthage
 
 Add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
 
 ```
-github "aschuch/AwesomeCache"
+github "aschuch/AwesomeCache", ~> 2.0
 ```
 
 Then run `carthage update`.
@@ -76,7 +78,7 @@ Then run `carthage update`.
 Add the following line to your Podfile.
 
 ```
-pod "AwesomeCache", "~> 1.0"
+pod "AwesomeCache", "~> 2.0"
 ```
 
 Then run `pod install` with Cocoapods 0.36 or newer.

@@ -8,26 +8,13 @@
 
 import UIKit
 import XCTest
-import AwesomeCache
+@testable import AwesomeCache
 
 class AwesomeCacheTests: XCTestCase {
-    
-    var cache: Cache<NSString> = Cache<NSString>(name: "awesomeCache")
-    
-    override func setUp() {
-        cache = Cache<NSString>(name: "awesomeCache")
-        cache.removeAllObjects()
-        
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        cache.removeAllObjects()
-        
-        super.tearDown()
-    }
-    
+ 
     func testGetterAndSetter() {
+        let cache = try! Cache<NSString>(name: "testGetterAndSetter")
+        
         let nilObject = cache.objectForKey("unavailable")
         XCTAssertNil(nilObject, "Get nil object")
         
@@ -37,6 +24,8 @@ class AwesomeCacheTests: XCTestCase {
     }
     
     func testRemoveObject() {
+        let cache = try! Cache<NSString>(name: "testRemoveObject")
+        
         cache.setObject("AddedString", forKey: "remove")
         XCTAssertNotNil(cache.objectForKey("remove"), "Get non-nil object")
         XCTAssertEqual("AddedString", cache.objectForKey("remove")!, "Get non-nil object")
@@ -46,6 +35,8 @@ class AwesomeCacheTests: XCTestCase {
     }
 
     func testRemoveAllObjects() {
+        let cache = try! Cache<NSString>(name: "testRemoveAllObjects")
+        
         cache.setObject("AddedString 1", forKey: "remove 1")
         cache.setObject("AddedString 2", forKey: "remove 2")
         XCTAssertNotNil(cache.objectForKey("remove 1"), "Get first non-nil object")
@@ -54,8 +45,8 @@ class AwesomeCacheTests: XCTestCase {
         let expectation = expectationWithDescription("Remove All Objects")
 
         cache.removeAllObjects {
-            XCTAssertNil(self.cache.objectForKey("remove 1"), "Get first deleted object")
-            XCTAssertNil(self.cache.objectForKey("remove 2"), "Get second deleted object")
+            XCTAssertNil(cache.objectForKey("remove 1"), "Get first deleted object")
+            XCTAssertNil(cache.objectForKey("remove 2"), "Get second deleted object")
             expectation.fulfill()
         }
 
@@ -67,6 +58,8 @@ class AwesomeCacheTests: XCTestCase {
     }
     
     func testSubscripting() {
+        let cache = try! Cache<NSString>(name: "testSubscripting")
+        
         cache["addSubscript"] = "AddedString"
         XCTAssertNotNil(cache["addSubscript"], "Get non-nil object via subscript")
         XCTAssertEqual("AddedString", cache["addSubscript"]!, "Get non-nil object via subscript")
@@ -76,6 +69,8 @@ class AwesomeCacheTests: XCTestCase {
     }
     
     func testInvalidKey() {
+        let cache = try! Cache<NSString>(name: "testInvalidKey")
+        
         let key = "//$%foobar--893"
         cache.setObject("AddedString", forKey: key)
         XCTAssertNotNil(cache.objectForKey(key), "Get non-nil object")
@@ -83,6 +78,8 @@ class AwesomeCacheTests: XCTestCase {
     }
     
     func testObjectExpiry() {
+        let cache = try! Cache<NSString>(name: "testObjectExpiry")
+        
         cache.setObject("NeverExpires", forKey: "never", expires: .Never)
         cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))
         cache.setObject("ExpiresAtDate", forKey: "atDate", expires: .Date(NSDate().dateByAddingTimeInterval(4)))
@@ -105,23 +102,25 @@ class AwesomeCacheTests: XCTestCase {
     }
     
     func testCacheBlockExecuted() {
+        let cache = try! Cache<NSString>(name: "testCacheBlockExecuted")
         var executed = false
         
         cache.setObjectForKey("blockExecuted", cacheBlock: { successBlock, failureBlock in
             executed = true
             successBlock("AddedString", .Never)
-            }, completion: { object, isLoadedFromCache, error in
-                XCTAssertNotNil(object, "Cached object not nil")
-                XCTAssertEqual("AddedString", object!, "Get cached object")
+        }, completion: { object, isLoadedFromCache, error in
+            XCTAssertNotNil(object, "Cached object not nil")
+            XCTAssertEqual("AddedString", object!, "Get cached object")
                 
-                XCTAssertNotNil(self.cache.objectForKey("blockExecuted"), "Get cached object")
-                XCTAssertTrue(executed, "Block was executed")
-                XCTAssertFalse(isLoadedFromCache, "Object was not loaded cached")
-                XCTAssertNil(error, "Error is nil")
+            XCTAssertNotNil(cache.objectForKey("blockExecuted"), "Get cached object")
+            XCTAssertTrue(executed, "Block was executed")
+            XCTAssertFalse(isLoadedFromCache, "Object was not loaded cached")
+            XCTAssertNil(error, "Error is nil")
         })
     }
     
     func testCacheBlockNotExecuted() {
+        let cache = try! Cache<NSString>(name: "testCacheBlockNotExecuted")
         var executed = false
         
         cache.setObject("AddedString", forKey: "blockNotExecuted")
@@ -129,36 +128,50 @@ class AwesomeCacheTests: XCTestCase {
         cache.setObjectForKey("blockNotExecuted", cacheBlock: { successBlock, failureBlock in
             executed = true
             successBlock("SometingElse", .Never)
-            }, completion: { object, isLoadedFromCache, error in
-                XCTAssertNotNil(object, "Cached object not nil")
-                XCTAssertEqual("AddedString", object!, "Get cached object")
+        }, completion: { object, isLoadedFromCache, error in
+            XCTAssertNotNil(object, "Cached object not nil")
+            XCTAssertEqual("AddedString", object!, "Get cached object")
                 
-                XCTAssertNotNil(self.cache.objectForKey("blockNotExecuted"), "Get cached object")
-                XCTAssertEqual("AddedString", self.cache.objectForKey("blockNotExecuted")!, "Get cached object")
+            XCTAssertNotNil(cache.objectForKey("blockNotExecuted"), "Get cached object")
+            XCTAssertEqual("AddedString", cache.objectForKey("blockNotExecuted")!, "Get cached object")
                 
-                XCTAssertFalse(executed, "Block was not executed")
-                XCTAssertTrue(isLoadedFromCache, "Object was loaded from cached")
-                XCTAssertNil(error, "Error is nil")
+            XCTAssertFalse(executed, "Block was not executed")
+            XCTAssertTrue(isLoadedFromCache, "Object was loaded from cached")
+            XCTAssertNil(error, "Error is nil")
         })
     }
     
-    
     func testCacheBlockError() {
+        let cache = try! Cache<NSString>(name: "testCacheBlockError")
         
         cache.setObjectForKey("blockError", cacheBlock: { successBlock, failureBlock in
             let error = NSError(domain: "AwesomeCacheErrorDomain", code: 42, userInfo: nil)
             failureBlock(error)
-            }, completion: { object, isLoadedFromCache, error in
-                XCTAssertNil(object, "Cached object nil")
-                XCTAssertNil(self.cache.objectForKey("blockError"), "Get cached object")
+        }, completion: { object, isLoadedFromCache, error in
+            XCTAssertNil(object, "Cached object nil")
+            XCTAssertNil(cache.objectForKey("blockError"), "Get cached object")
                 
-                XCTAssertFalse(isLoadedFromCache, "Object was loaded from cached")
-                XCTAssertNotNil(error, "Error is nil")
-                XCTAssert(error!.domain == "AwesomeCacheErrorDomain", "Error domain")
-                XCTAssert(error!.code == 42, "Error code")
+            XCTAssertFalse(isLoadedFromCache, "Object was loaded from cached")
+            XCTAssertNotNil(error, "Error is nil")
+            XCTAssert(error!.domain == "AwesomeCacheErrorDomain", "Error domain")
+            XCTAssert(error!.code == 42, "Error code")
         })
-        
-        
     }
 
+    func testDiskPersistance() {
+        let cache = try! Cache<NSString>(name: "testDiskPersistance")
+        
+        cache.setObject("foobar", forKey: "persistedObject", completion: {
+            let beforeObject = cache.objectForKey("persistedObject")
+            XCTAssertNotNil(beforeObject)
+            
+            // Remove all objects from internal NSCache
+            // to force reload from disk
+            cache.cache.removeAllObjects()
+            
+            let afterObject = cache.objectForKey("persistedObject")
+            XCTAssertNotNil(afterObject)
+        })
+    }
+    
 }

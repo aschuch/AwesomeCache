@@ -113,6 +113,7 @@
 				4D44D2881971627700EC5FDB /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		4D44D2881971627700EC5FDB /* Products */ = {
 			isa = PBXGroup;

@@ -56,6 +56,19 @@ public class Cache<T: NSCoding> {
 	public convenience init(name: String) throws {
 		try self.init(name: name, directory: nil)
 	}
+    
+    /// Convenience Initializer
+    ///
+    /// - parameter name: Name of this cache
+    /// - parameter countLimit: (NSCache) The maximum number of objects the cache should hold.
+    /// - parameter totalCostLimit: (NSCache) The maximum total cost that the cache can hold before it starts evicting objects
+    ///
+    /// - returns	A new cache with the given name and the default cache directory
+    public convenience init(name: String, countLimit: Int = 0, totalCostLimit: Int = 0) throws {
+        try self.init(name: name, directory: nil)
+        self.cache.countLimit = countLimit
+        self.cache.totalCostLimit = totalCostLimit
+    }
 	
 	
 	// MARK: Awesome caching

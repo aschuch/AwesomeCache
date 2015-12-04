@@ -64,7 +64,7 @@ public class Cache<T: NSCoding> {
     /// - parameter totalCostLimit: (NSCache) The maximum total cost that the cache can hold before it starts evicting objects
     ///
     /// - returns	A new cache with the given name and the default cache directory
-    public convenience init(name: String, countLimit: Int = 0, totalCostLimit: Int = 0) throws {
+    public convenience init(name: String, countLimit: Int, totalCostLimit: Int) throws {
         try self.init(name: name, directory: nil)
         self.cache.countLimit = countLimit
         self.cache.totalCostLimit = totalCostLimit

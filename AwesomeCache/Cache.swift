@@ -87,12 +87,12 @@ public class Cache<T: NSCoding> {
 	///                         The supplied success or failure blocks must be called upon completion.
 	///                         If the error block is called, the object is not cached and the completion block is invoked with this error.
     /// - parameter completion: Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
-	public func setObjectForKey(key: String, cacheBlock: ((T, CacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
+    public func setObjectForKey(key: String, cost: Int = 0, cacheBlock: ((T, CacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
 		if let object = objectForKey(key) {
 			completion(object, true, nil)
 		} else {
 			let successBlock: (T, CacheExpiry) -> () = { (obj, expires) in
-				self.setObject(obj, forKey: key, expires: expires)
+                self.setObject(obj, forKey: key, expires: expires, cost: cost)
 				completion(obj, false, nil)
 			}
 			
@@ -155,13 +155,17 @@ public class Cache<T: NSCoding> {
         setObject(object, forKey: key, expires: expires, completion: { })
     }
     
+    public func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never, cost: Int) {
+        setObject(object, forKey: key, expires: expires, cost: cost, completion: { })
+    }
+    
     /// For internal testing only, might add this to the public API if needed
-    internal func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never, completion: () -> ()) {
+    internal func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never, cost: Int = 0, completion: () -> ()) {
         let expiryDate = expiryDateForCacheExpiry(expires)
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
         
         // Set object in local cache
-        cache.setObject(cacheObject, forKey: key)
+        cache.setObject(cacheObject, forKey: key, cost: cost)
         
         // Write object to disk (asyncronously)
         dispatch_async(diskWriteQueue) {

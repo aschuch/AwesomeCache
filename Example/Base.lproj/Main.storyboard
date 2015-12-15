@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -29,7 +29,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WO3-lW-cdC">
-                                <rect key="frame" x="232" y="176" width="137" height="30"/>
+                                <rect key="frame" x="233.5" y="176" width="134" height="30"/>
                                 <state key="normal" title="Reload From Cache">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -38,7 +38,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cUO-c3-goo">
-                                <rect key="frame" x="251" y="214" width="99" height="30"/>
+                                <rect key="frame" x="252" y="214" width="97" height="30"/>
                                 <state key="normal" title="Save in Cache">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -46,16 +46,34 @@
                                     <action selector="saveInCache:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="STv-qo-lMe"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-Oa-gMA">
+                                <rect key="frame" x="244" y="252" width="112" height="30"/>
+                                <state key="normal" title="Calculate Cache"/>
+                                <connections>
+                                    <action selector="calculateCacheSize:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="5oh-5C-tQX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AhF-JF-WWW">
+                                <rect key="frame" x="249" y="285" width="103" height="30"/>
+                                <state key="normal" title="Remove Cache"/>
+                                <connections>
+                                    <action selector="removeCache:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="PrC-4c-isf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="cUO-c3-goo" secondAttribute="centerX" constant="-0.5" id="0s9-IX-nOm"/>
                             <constraint firstAttribute="width" secondItem="eud-Cw-V1B" secondAttribute="width" constant="20" id="1xR-At-DgT"/>
+                            <constraint firstItem="AhF-JF-WWW" firstAttribute="top" secondItem="2zZ-Oa-gMA" secondAttribute="bottom" constant="3" id="ABg-DY-nLW"/>
                             <constraint firstItem="eud-Cw-V1B" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="187" id="I4t-hI-sMB"/>
+                            <constraint firstItem="2zZ-Oa-gMA" firstAttribute="centerX" secondItem="cUO-c3-goo" secondAttribute="centerX" id="I6D-7W-dvh"/>
+                            <constraint firstItem="2zZ-Oa-gMA" firstAttribute="top" secondItem="cUO-c3-goo" secondAttribute="bottom" constant="8" id="LkJ-d5-au6"/>
                             <constraint firstAttribute="centerX" secondItem="WO3-lW-cdC" secondAttribute="centerX" constant="-0.5" id="Nsq-S3-MP5"/>
                             <constraint firstItem="WO3-lW-cdC" firstAttribute="top" secondItem="eud-Cw-V1B" secondAttribute="bottom" constant="8" id="Uvq-XJ-UMa"/>
                             <constraint firstItem="eud-Cw-V1B" firstAttribute="centerX" secondItem="WO3-lW-cdC" secondAttribute="centerX" id="VcU-lq-hkO"/>
                             <constraint firstItem="eud-Cw-V1B" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="jx7-Jr-pHE"/>
+                            <constraint firstItem="AhF-JF-WWW" firstAttribute="centerX" secondItem="2zZ-Oa-gMA" secondAttribute="centerX" id="l3S-AG-GRi"/>
                             <constraint firstAttribute="centerX" secondItem="eud-Cw-V1B" secondAttribute="centerX" constant="-0.5" id="m6C-XT-ZOp"/>
                             <constraint firstAttribute="centerY" secondItem="eud-Cw-V1B" secondAttribute="centerY" constant="19" id="wIl-qR-x81"/>
                             <constraint firstItem="WO3-lW-cdC" firstAttribute="top" secondItem="eud-Cw-V1B" secondAttribute="bottom" constant="8" symbolic="YES" id="xsN-t4-xFi"/>

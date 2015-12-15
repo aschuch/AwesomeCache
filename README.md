@@ -35,6 +35,14 @@ cache.setObject("Alex", forKey: "name", expires: .Date(NSDate(timeIntervalSince1
 If an object is accessed after its expiry date, it is automatically removed from the cache and deleted from disk.
 However, you are responsible to delete expired objects regularly by calling `removeExpiredObjects` (e.g. on app launch).
 
+### Calculate cache size
+Asynchronous calculate cache size , callback size on main thread.
+```swift
+cache.calculateDiskCacheSizeWithCompletionHandler { (size) -> () in
+            let kSize = String(format: "%d", size)
+            print(kSize)
+}
+```
 
 ### Awesome API Caching
 

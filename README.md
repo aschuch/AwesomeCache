@@ -47,7 +47,7 @@ cache.calculateDiskCacheSizeWithCompletionHandler { (size) -> () in
 ### Awesome API Caching
 
 API responses are usually cached for a specific period of time. AwesomeCache provides an easy method to cache a block of asynchronous tasks.
-
+ 
 ```swift
 cache.setObjectForKey("name", cacheBlock: { success, failure in
   // Perform tasks, e.g. call an API

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4DF567B51C416165007FBED7"
-               BuildableName = "AwesomeCache-tvOS.framework"
+               BuildableName = "AwesomeCache.framework"
                BlueprintName = "AwesomeCache-tvOS"
                ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4DF567B51C416165007FBED7"
-            BuildableName = "AwesomeCache-tvOS.framework"
+            BuildableName = "AwesomeCache.framework"
             BlueprintName = "AwesomeCache-tvOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4DF567B51C416165007FBED7"
-            BuildableName = "AwesomeCache-tvOS.framework"
+            BuildableName = "AwesomeCache.framework"
             BlueprintName = "AwesomeCache-tvOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>

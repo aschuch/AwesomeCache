@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0720"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
+               BlueprintIdentifier = "4DF567A81C41611F007FBED7"
                BuildableName = "AwesomeCache.framework"
-               BlueprintName = "AwesomeCache"
+               BlueprintName = "AwesomeCache-watchOS"
                ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,29 +26,9 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DC91FA11A7C54B200C81E10"
-               BuildableName = "AwesomeCacheTests.xctest"
-               BlueprintName = "AwesomeCacheTests"
-               ReferencedContainer = "container:Example.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
-            BuildableName = "AwesomeCache.framework"
-            BlueprintName = "AwesomeCache"
-            ReferencedContainer = "container:Example.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -65,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
+            BlueprintIdentifier = "4DF567A81C41611F007FBED7"
             BuildableName = "AwesomeCache.framework"
-            BlueprintName = "AwesomeCache"
+            BlueprintName = "AwesomeCache-watchOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -83,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
+            BlueprintIdentifier = "4DF567A81C41611F007FBED7"
             BuildableName = "AwesomeCache.framework"
-            BlueprintName = "AwesomeCache"
+            BlueprintName = "AwesomeCache-watchOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

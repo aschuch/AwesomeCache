@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DF567A81C41611F007FBED7"
+               BlueprintIdentifier = "4D81D4811C416F3C009A66A7"
                BuildableName = "AwesomeCache.framework"
                BlueprintName = "AwesomeCache-watchOS"
                ReferencedContainer = "container:Example.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DF567A81C41611F007FBED7"
+            BlueprintIdentifier = "4D81D4811C416F3C009A66A7"
             BuildableName = "AwesomeCache.framework"
             BlueprintName = "AwesomeCache-watchOS"
             ReferencedContainer = "container:Example.xcodeproj">
@@ -63,7 +63,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DF567A81C41611F007FBED7"
+            BlueprintIdentifier = "4D81D4811C416F3C009A66A7"
             BuildableName = "AwesomeCache.framework"
             BlueprintName = "AwesomeCache-watchOS"
             ReferencedContainer = "container:Example.xcodeproj">

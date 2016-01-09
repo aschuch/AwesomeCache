@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4DF567B51C416165007FBED7"
-               BuildableName = "AwesomeCache.framework"
+               BlueprintIdentifier = "4D81D48E1C416F6F009A66A7"
+               BuildableName = "AwesomeCache-tvOS.framework"
                BlueprintName = "AwesomeCache-tvOS"
                ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DF567B51C416165007FBED7"
-            BuildableName = "AwesomeCache.framework"
+            BlueprintIdentifier = "4D81D48E1C416F6F009A66A7"
+            BuildableName = "AwesomeCache-tvOS.framework"
             BlueprintName = "AwesomeCache-tvOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4DF567B51C416165007FBED7"
-            BuildableName = "AwesomeCache.framework"
+            BlueprintIdentifier = "4D81D48E1C416F6F009A66A7"
+            BuildableName = "AwesomeCache-tvOS.framework"
             BlueprintName = "AwesomeCache-tvOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>

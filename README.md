@@ -74,7 +74,7 @@ github "aschuch/AwesomeCache", ~> 2.0
 
 Then run `carthage update`.
 
-#### Cocoapods
+#### CocoaPods
 
 Add the following line to your Podfile.
 
@@ -82,7 +82,7 @@ Add the following line to your Podfile.
 pod "AwesomeCache", "~> 2.0"
 ```
 
-Then run `pod install` with Cocoapods 0.36 or newer.
+Then run `pod install` with CocoaPods 0.36 or newer.
 
 #### Manually
 

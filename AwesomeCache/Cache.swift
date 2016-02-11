@@ -211,7 +211,48 @@ public class Cache<T: NSCoding> {
 			}
 		}
 	}
-	
+    //MARK: -- Calculate Disk Cache Size
+    /**
+    Calculate disk cache size
+    
+    - parameter completionHandler: Calculate complete then callback
+    */
+    public func calculateDiskCacheSizeWithCompletionHandler(completionHandler: ((size: UInt) -> ())?) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            let diskCacheURL = self.cacheDirectory
+            
+            let resourceKeys = [NSURLIsDirectoryKey, NSURLTotalFileAllocatedSizeKey]
+            var diskCacheSize: UInt = 0
+            
+            if let fileEnumerator = self.fileManager.enumeratorAtURL(diskCacheURL, includingPropertiesForKeys: resourceKeys, options: NSDirectoryEnumerationOptions.SkipsHiddenFiles, errorHandler: nil),
+                urls = fileEnumerator.allObjects as? [NSURL] {
+                    for fileURL in urls {
+                        do {
+                            let resourceValues = try fileURL.resourceValuesForKeys(resourceKeys)
+                            // If it is a Directory. Continue to next file URL.
+                            if let isDirectory = resourceValues[NSURLIsDirectoryKey]?.boolValue {
+                                if isDirectory {
+                                    continue
+                                }
+                            }
+                            
+                            if let fileSize = resourceValues[NSURLTotalFileAllocatedSizeKey] as? NSNumber {
+                                diskCacheSize += fileSize.unsignedLongValue
+                            }
+                        } catch _ {
+                        }
+                        
+                    }
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if let completionHandler = completionHandler {
+                    completionHandler(size: diskCacheSize)
+                }
+            })
+        })
+    }
+
 	
 	// MARK: Subscripting
 	
@@ -259,5 +300,6 @@ public class Cache<T: NSCoding> {
 			return date
 		}
 	}
-
+    
+    
 }

@@ -6,7 +6,11 @@
 //  Copyright (c) 2015 Alexander Schuch. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
+#elseif os(OSX)
+import Cocoa
+#endif
 import XCTest
 @testable import AwesomeCache
 

@@ -164,7 +164,7 @@ public class Cache<T: NSCoding> {
 	/// Removes an object from the cache.
 	///
 	/// - parameter key: The key of the object that should be removed
-	public func removeObjectForKey(key: String) {
+	public func removeObjectForKey(key: String, completion: (() -> Void)? = nil) {
 		cache.removeObjectForKey(key)
 		
 		dispatch_async(diskWriteQueue) {
@@ -172,6 +172,10 @@ public class Cache<T: NSCoding> {
 			do {
 				try self.fileManager.removeItemAtURL(url)
 			} catch _ {}
+
+			dispatch_async(dispatch_get_main_queue()) {
+				completion?()
+			}
 		}
 	}
 	

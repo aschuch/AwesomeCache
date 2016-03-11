@@ -155,8 +155,9 @@ public class Cache<T: NSCoding> {
         
         // Write object to disk (asyncronously)
         dispatch_async(diskWriteQueue) {
-            let path = self.urlForKey(key).path!
-            NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
+            if let path = self.urlForKey(key).path {
+                NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
+            }
             completion()
         }
     }

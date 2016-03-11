@@ -188,11 +188,9 @@ public class Cache<T: NSCoding> {
 			
             for key in keys {
 				let url = self.urlForKey(key)
-				do {
-					try self.fileManager.removeItemAtURL(url)
-				} catch _ {}
+				let _  = try? self.fileManager.removeItemAtURL(url)
 			}
-
+            
 			dispatch_async(dispatch_get_main_queue()) {
 				completion?()
 			}
@@ -246,9 +244,7 @@ public class Cache<T: NSCoding> {
 	}
 	
 	private func sanitizedKey(key: String) -> String {
-		let regex = try! NSRegularExpression(pattern: "[^a-zA-Z0-9_]+", options: NSRegularExpressionOptions())
-		let range = NSRange(location: 0, length: key.characters.count)
-		return regex.stringByReplacingMatchesInString(key, options: NSMatchingOptions(), range: range, withTemplate: "-")
+        return key.stringByReplacingOccurrencesOfString("[^a-zA-Z0-9_]+", withString: "-", options: .RegularExpressionSearch, range: nil)
 	}
 
 	private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
@@ -261,5 +257,4 @@ public class Cache<T: NSCoding> {
 			return date
 		}
 	}
-
 }

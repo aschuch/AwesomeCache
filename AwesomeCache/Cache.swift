@@ -146,7 +146,7 @@ public class Cache<T: NSCoding> {
     }
     
     /// For internal testing only, might add this to the public API if needed
-    internal func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never, completion: () -> ()) {
+    internal func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never, completion: () -> Void) {
         let expiryDate = expiryDateForCacheExpiry(expires)
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
         

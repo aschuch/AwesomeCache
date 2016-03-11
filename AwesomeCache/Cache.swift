@@ -22,6 +22,10 @@ public class Cache<T: NSCoding> {
 	private let fileManager = NSFileManager()
 	private let diskWriteQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskWriteQueue", DISPATCH_QUEUE_SERIAL)
 	private let diskReadQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskReadQueue", DISPATCH_QUEUE_SERIAL)
+    
+    /// Typealias to define the reusability in declaration of the closures.
+    public typealias cacheBlockClosure = (T, CacheExpiry) -> Void
+    public typealias errorClosure = (NSError?) -> Void
 	
 	
 	// MARK: Initializers
@@ -74,16 +78,17 @@ public class Cache<T: NSCoding> {
 	///                         The supplied success or failure blocks must be called upon completion.
 	///                         If the error block is called, the object is not cached and the completion block is invoked with this error.
     /// - parameter completion: Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
-	public func setObjectForKey(key: String, cacheBlock: ((T, CacheExpiry) -> (), (NSError?) -> ()) -> (), completion: (T?, Bool, NSError?) -> ()) {
+	public func setObjectForKey(key: String, cacheBlock: (cacheBlockClosure, errorClosure) -> Void, completion: (T?, Bool, NSError?) -> Void) {
+        
 		if let object = objectForKey(key) {
 			completion(object, true, nil)
 		} else {
-			let successBlock: (T, CacheExpiry) -> () = { (obj, expires) in
+			let successBlock: cacheBlockClosure = { (obj, expires) in
 				self.setObject(obj, forKey: key, expires: expires)
 				completion(obj, false, nil)
 			}
 			
-			let failureBlock: (NSError?) -> () = { (error) in
+			let failureBlock: errorClosure = { (error) in
 				completion(nil, false, error)
 			}
 			
@@ -101,20 +106,18 @@ public class Cache<T: NSCoding> {
     ///
     /// - returns: The cached object for the given name, or nil
 	public func objectForKey(key: String) -> T? {
-		var possibleObject: CacheObject?
-				
-		// Check if object exists in local cache
-		possibleObject = cache.objectForKey(key) as? CacheObject
 		
-		if possibleObject == nil {
-			// Try to load object from disk (synchronously)
-			dispatch_sync(diskReadQueue) {
-				let path = self.urlForKey(key).path!
-				if self.fileManager.fileExistsAtPath(path) {
-					possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
-				}
-			}
-		}
+        // Check if object exists in local cache
+        var possibleObject = cache.objectForKey(key) as? CacheObject
+        
+        if possibleObject == nil {
+            // Try to load object from disk (synchronously)
+            dispatch_sync(diskReadQueue) {
+                if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
+                    possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
+                }
+            }
+        }
 		
 		// Check if object is not already expired and return
 		// Delete object if expired

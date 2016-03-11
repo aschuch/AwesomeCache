@@ -173,9 +173,7 @@ public class Cache<T: NSCoding> {
 		
 		dispatch_async(diskWriteQueue) {
 			let url = self.urlForKey(key)
-			do {
-				try self.fileManager.removeItemAtURL(url)
-			} catch _ {}
+            let _ = try? self.fileManager.removeItemAtURL(url)
 		}
 	}
 	

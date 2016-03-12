@@ -69,7 +69,7 @@ The completion block is invoked as soon as the cacheBlock is finished and the ob
 Add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
 
 ```
-github "aschuch/AwesomeCache", ~> 2.0
+github "aschuch/AwesomeCache" ~> 2.0
 ```
 
 Then run `carthage update`.

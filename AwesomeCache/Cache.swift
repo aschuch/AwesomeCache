@@ -24,8 +24,8 @@ public class Cache<T: NSCoding> {
 	private let diskReadQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskReadQueue", DISPATCH_QUEUE_SERIAL)
     
     /// Typealias to define the reusability in declaration of the closures.
-    public typealias cacheBlockClosure = (T, CacheExpiry) -> Void
-    public typealias errorClosure = (NSError?) -> Void
+    public typealias CacheBlockClosure = (T, CacheExpiry) -> Void
+    public typealias ErrorClosure = (NSError?) -> Void
 	
 	
 	// MARK: Initializers
@@ -78,17 +78,17 @@ public class Cache<T: NSCoding> {
 	///                         The supplied success or failure blocks must be called upon completion.
 	///                         If the error block is called, the object is not cached and the completion block is invoked with this error.
     /// - parameter completion: Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
-	public func setObjectForKey(key: String, cacheBlock: (cacheBlockClosure, errorClosure) -> Void, completion: (T?, Bool, NSError?) -> Void) {
+	public func setObjectForKey(key: String, cacheBlock: (CacheBlockClosure, ErrorClosure) -> Void, completion: (T?, Bool, NSError?) -> Void) {
         
 		if let object = objectForKey(key) {
 			completion(object, true, nil)
 		} else {
-			let successBlock: cacheBlockClosure = { (obj, expires) in
+			let successBlock: CacheBlockClosure = { (obj, expires) in
 				self.setObject(obj, forKey: key, expires: expires)
 				completion(obj, false, nil)
 			}
 			
-			let failureBlock: errorClosure = { (error) in
+			let failureBlock: ErrorClosure = { (error) in
 				completion(nil, false, error)
 			}
 			

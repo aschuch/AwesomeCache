@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
                BuildableName = "AwesomeCache.framework"
-               BlueprintName = "AwesomeCache"
+               BlueprintName = "AwesomeCache-iOS"
                ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,7 +45,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
             BuildableName = "AwesomeCache.framework"
-            BlueprintName = "AwesomeCache"
+            BlueprintName = "AwesomeCache-iOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,7 +67,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
             BuildableName = "AwesomeCache.framework"
-            BlueprintName = "AwesomeCache"
+            BlueprintName = "AwesomeCache-iOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4DC91F971A7C54B200C81E10"
             BuildableName = "AwesomeCache.framework"
-            BlueprintName = "AwesomeCache"
+            BlueprintName = "AwesomeCache-iOS"
             ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

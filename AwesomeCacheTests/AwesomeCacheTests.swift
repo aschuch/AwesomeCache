@@ -42,19 +42,9 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNotNil(cache.objectForKey("remove 1"), "Get first non-nil object")
         XCTAssertNotNil(cache.objectForKey("remove 2"), "Get second non-nil object")
 
-        let expectation = expectationWithDescription("Remove All Objects")
-
-        cache.removeAllObjects {
-            XCTAssertNil(cache.objectForKey("remove 1"), "Get first deleted object")
-            XCTAssertNil(cache.objectForKey("remove 2"), "Get second deleted object")
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(4) { error in
-            if let error = error {
-                print("\n\n\nError: \(error.localizedDescription)\n\n\n")
-            }
-        }
+        cache.removeAllObjects()
+        XCTAssertNil(cache.objectForKey("remove 1"), "Get first deleted object")
+        XCTAssertNil(cache.objectForKey("remove 2"), "Get second deleted object")
     }
     
     func testSubscripting() {
@@ -117,6 +107,9 @@ class AwesomeCacheTests: XCTestCase {
             XCTAssertFalse(isLoadedFromCache, "Object was not loaded cached")
             XCTAssertNil(error, "Error is nil")
         })
+
+        // Make sure to always drain the cache
+        cache.removeAllObjects()
     }
     
     func testCacheBlockNotExecuted() {
@@ -161,17 +154,16 @@ class AwesomeCacheTests: XCTestCase {
     func testDiskPersistance() {
         let cache = try! Cache<NSString>(name: "testDiskPersistance")
         
-        cache.setObject("foobar", forKey: "persistedObject", completion: {
-            let beforeObject = cache.objectForKey("persistedObject")
-            XCTAssertNotNil(beforeObject)
+        cache.setObject("foobar", forKey: "persistedObject")
+        let beforeObject = cache.objectForKey("persistedObject")
+        XCTAssertNotNil(beforeObject)
             
-            // Remove all objects from internal NSCache
-            // to force reload from disk
-            cache.cache.removeAllObjects()
+        // Remove all objects from internal NSCache
+        // to force reload from disk
+        cache.cache.removeAllObjects()
             
-            let afterObject = cache.objectForKey("persistedObject")
-            XCTAssertNotNil(afterObject)
-        })
+        let afterObject = cache.objectForKey("persistedObject")
+        XCTAssertNotNil(afterObject)
     }
     
 }

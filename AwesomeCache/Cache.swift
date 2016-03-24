@@ -138,7 +138,7 @@ public class Cache<T: NSCoding> {
     /// - parameter object:	The object that should be cached
     /// - parameter forKey:	A key that represents this object in the cache
     /// - parameter expires: The CacheExpiry that indicates when the given object should be expired
-    internal func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never) {
+    public func setObject(object: T, forKey key: String, expires: CacheExpiry = .Never) {
         let expiryDate = expiryDateForCacheExpiry(expires)
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
 

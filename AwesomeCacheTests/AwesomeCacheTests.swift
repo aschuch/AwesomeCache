@@ -46,6 +46,23 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNil(cache.objectForKey("remove 1"), "Get first deleted object")
         XCTAssertNil(cache.objectForKey("remove 2"), "Get second deleted object")
     }
+
+    func testRemoveExpiredObjects() {
+        let cache = try! Cache<NSString>(name: "testRemoveExpiredObjects")
+
+        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
+        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))
+        cache.removeExpiredObjects()
+
+        XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
+        XCTAssertNotNil(cache.objectForKey("2Seconds"), "Expires in 2 seconds")
+
+        sleep(3)
+
+        cache.removeExpiredObjects()
+        XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
+        XCTAssertNil(cache.objectForKey("2Seconds"), "Expires in 2 seconds")
+    }
     
     func testSubscripting() {
         let cache = try! Cache<NSString>(name: "testSubscripting")

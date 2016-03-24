@@ -98,7 +98,7 @@ public class Cache<T: NSCoding> {
     // MARK: Get object
 
     /// Looks up and returns an object with the specified name if it exists.
-    /// If an object is already expired, it is automatically deleted and `nil` will be returned.
+    /// If an object is already expired, `nil` will be returned.
     ///
     /// - parameter key: The name of the object that should be returned
     ///
@@ -110,22 +110,14 @@ public class Cache<T: NSCoding> {
         if possibleObject == nil {
             // Try to load object from disk (synchronously)
             dispatch_sync(queue) {
-                if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
-                    possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
-                }
+                possibleObject = self.readObjectFromDisk(key)
             }
         }
 
         // Check if object is not already expired and return
-        // Delete object if expired
-        if let object = possibleObject {
-            if !object.isExpired() {
-                return object.value as? T
-            } else {
-                removeObjectForKey(key)
-            }
+        if let object = possibleObject where !object.isExpired() {
+            return object.value as? T
         }
-
         return nil
     }
 
@@ -163,8 +155,7 @@ public class Cache<T: NSCoding> {
         cache.removeObjectForKey(key)
 
         dispatch_sync(queue) {
-            let url = self.urlForKey(key)
-            _ = try? self.fileManager.removeItemAtURL(url)
+            self.removeObjectFromDisk(key)
         }
     }
 
@@ -174,11 +165,7 @@ public class Cache<T: NSCoding> {
 
         dispatch_sync(queue) {
             let keys = self.allKeys()
-
-            for key in keys {
-                let url = self.urlForKey(key)
-                _ = try? self.fileManager.removeItemAtURL(url)
-            }
+            keys.forEach(self.removeObjectFromDisk)
         }
     }
 
@@ -189,8 +176,14 @@ public class Cache<T: NSCoding> {
     public func removeExpiredObjects() {
         dispatch_sync(queue) {
             let keys = self.allKeys()
-            // `objectForKey:` deletes the object if it is expired
-            keys.forEach { self.objectForKey($0) }
+
+            for key in keys {
+                let possibleObject = self.readObjectFromDisk(key)
+                if let object = possibleObject where object.isExpired() {
+                    self.cache.removeObjectForKey(key)
+                    self.removeObjectFromDisk(key)
+                }
+            }
         }
     }
 
@@ -212,6 +205,19 @@ public class Cache<T: NSCoding> {
 
 
     // MARK: Private Helper
+
+    private func removeObjectFromDisk(key: String) {
+        let url = self.urlForKey(key)
+        _ = try? self.fileManager.removeItemAtURL(url)
+    }
+
+    private func readObjectFromDisk(key: String) -> CacheObject? {
+        if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
+            return NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
+        }
+        return nil
+    }
+
 
     private func allKeys() -> [String] {
         let urls = try? self.fileManager.contentsOfDirectoryAtURL(self.cacheDirectory, includingPropertiesForKeys: nil, options: [])

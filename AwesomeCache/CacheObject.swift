@@ -29,16 +29,12 @@ class CacheObject: NSObject, NSCoding {
 
     required init?(coder aDecoder: NSCoder) {
         guard let val = aDecoder.decodeObjectForKey("value"),
-            let expiry = aDecoder.decodeObjectForKey("expiryDate") as? NSDate else {
-                value = NSObject()
-                expiryDate = NSDate.distantPast()
-                super.init()
+              let expiry = aDecoder.decodeObjectForKey("expiryDate") as? NSDate else {
                 return nil
         }
 
         self.value = val
         self.expiryDate = expiry
-
         super.init()
     }
 

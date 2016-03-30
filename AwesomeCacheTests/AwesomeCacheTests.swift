@@ -11,6 +11,14 @@ import XCTest
 @testable import AwesomeCache
 
 class AwesomeCacheTests: XCTestCase {
+
+    func testCustomCachePath() {
+        let url = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first!
+        let cache = try! Cache<NSString>(name: "CustomCachePath", directory: url)
+
+        cache.setObject("AddedString", forKey: "add")
+        XCTAssertNotNil(cache.objectForKey("add"), "Get non-nil object")
+    }
  
     func testGetterAndSetter() {
         let cache = try! Cache<NSString>(name: "testGetterAndSetter")
@@ -106,6 +114,29 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
         XCTAssertNil(cache.objectForKey("2Seconds"), "Expires in 2 seconds")
         XCTAssertNil(cache.objectForKey("atDate"), "Expires in 3 seconds")
+    }
+
+    func testAllObjects() {
+        let cache = try! Cache<NSString>(name: "testAllObjects")
+
+        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
+        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))
+        cache.setObject("ExpiresAtDate", forKey: "atDate", expires: .Date(NSDate().dateByAddingTimeInterval(4)))
+
+        sleep(2)
+
+        let all = cache.allObjects()
+
+        XCTAssertTrue(all.count == 2, "2 returned objects")
+        XCTAssertTrue(all.contains("NeverExpires"), "Never expires")
+        XCTAssertFalse(all.contains("ExpiresIn2Seconds"), "Expires in 2 seconds")
+        XCTAssertTrue(all.contains("ExpiresAtDate"), "Expires in 4 seconds")
+
+        let expiredIncluded = cache.allObjects(includeExpired: true)
+        XCTAssertTrue(expiredIncluded.count == 3, "3 returned objects")
+        XCTAssertTrue(expiredIncluded.contains("NeverExpires"), "Never expires")
+        XCTAssertTrue(expiredIncluded.contains("ExpiresIn2Seconds"), "Expires in 2 seconds")
+        XCTAssertTrue(expiredIncluded.contains("ExpiresAtDate"), "Expires in 4 seconds")
     }
     
     func testCacheBlockExecuted() {

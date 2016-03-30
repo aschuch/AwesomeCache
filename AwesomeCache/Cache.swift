@@ -104,21 +104,31 @@ public class Cache<T: NSCoding> {
     ///
     /// - returns: The cached object for the given name, or nil
     public func objectForKey(key: String) -> T? {
-        // Check if object exists in local cache
-        var possibleObject = cache.objectForKey(key) as? CacheObject
+        var object: CacheObject?
 
-        if possibleObject == nil {
-            // Try to load object from disk (synchronously)
-            dispatch_sync(queue) {
-                possibleObject = self.readObjectFromDisk(key)
-            }
+        dispatch_sync(queue) {
+           object = self.read(key)
         }
 
         // Check if object is not already expired and return
-        if let object = possibleObject where !object.isExpired() {
+        if let object = object where !object.isExpired() {
             return object.value as? T
         }
+
         return nil
+    }
+
+    public func allObjects(includeExpired includeExpired: Bool = false) -> [T] {
+        var objects = [T]()
+
+        dispatch_sync(queue) {
+            let keys = self.allKeys()
+            let all = keys.map(self.read).flatMap { $0 }
+            let filtered = includeExpired ? all : all.filter { !$0.isExpired() }
+            objects = filtered.map { $0.value as? T }.flatMap { $0 }
+        }
+
+        return objects
     }
 
 
@@ -134,14 +144,8 @@ public class Cache<T: NSCoding> {
         let expiryDate = expiryDateForCacheExpiry(expires)
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
 
-        // Set object in local cache
-        cache.setObject(cacheObject, forKey: key)
-
-        // Write object to disk (asyncronously)
         dispatch_sync(queue) {
-            if let path = self.urlForKey(key).path {
-                NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
-            }
+            self.add(cacheObject, key: key)
         }
     }
 
@@ -155,7 +159,7 @@ public class Cache<T: NSCoding> {
         cache.removeObjectForKey(key)
 
         dispatch_sync(queue) {
-            self.removeObjectFromDisk(key)
+            self.removeFromDisk(key)
         }
     }
 
@@ -165,7 +169,7 @@ public class Cache<T: NSCoding> {
 
         dispatch_sync(queue) {
             let keys = self.allKeys()
-            keys.forEach(self.removeObjectFromDisk)
+            keys.forEach(self.removeFromDisk)
         }
     }
 
@@ -178,10 +182,10 @@ public class Cache<T: NSCoding> {
             let keys = self.allKeys()
 
             for key in keys {
-                let possibleObject = self.readObjectFromDisk(key)
+                let possibleObject = self.read(key)
                 if let object = possibleObject where object.isExpired() {
                     self.cache.removeObjectForKey(key)
-                    self.removeObjectFromDisk(key)
+                    self.removeFromDisk(key)
                 }
             }
         }
@@ -204,20 +208,37 @@ public class Cache<T: NSCoding> {
     }
 
 
-    // MARK: Private Helper
+    // MARK: Private Helper (not thread safe)
 
-    private func removeObjectFromDisk(key: String) {
-        let url = self.urlForKey(key)
-        _ = try? self.fileManager.removeItemAtURL(url)
+    private func add(object: CacheObject, key: String) {
+        // Set object in local cache
+        cache.setObject(object, forKey: key)
+
+        // Write object to disk
+        if let path = urlForKey(key).path {
+            NSKeyedArchiver.archiveRootObject(object, toFile: path)
+        }
     }
 
-    private func readObjectFromDisk(key: String) -> CacheObject? {
+    private func read(key: String) -> CacheObject? {
+        // Check if object exists in local cache
+        if let object = cache.objectForKey(key) as? CacheObject {
+            return object
+        }
+
+        // Otherwise, read from disk
         if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
             return NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
         }
+
         return nil
     }
 
+    // Deletes an object from disk
+    private func removeFromDisk(key: String) {
+        let url = self.urlForKey(key)
+        _ = try? self.fileManager.removeItemAtURL(url)
+    }
 
     private func allKeys() -> [String] {
         let urls = try? self.fileManager.contentsOfDirectoryAtURL(self.cacheDirectory, includingPropertiesForKeys: nil, options: [])

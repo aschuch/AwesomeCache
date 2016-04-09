@@ -229,12 +229,13 @@ public class Cache<T: NSCoding> {
 	}
 	
 	
-	// MARK: Private Helper
     
-    private func allKeys() -> [String] {
+    public func allKeys() -> [String] {
         let urls = try? self.fileManager.contentsOfDirectoryAtURL(self.cacheDirectory, includingPropertiesForKeys: nil, options: [])
         return urls?.flatMap { $0.URLByDeletingPathExtension?.lastPathComponent } ?? []
     }
+    
+    	// MARK: Private Helper
 	
 	private func urlForKey(key: String) -> NSURL {
 		let k = sanitizedKey(key)

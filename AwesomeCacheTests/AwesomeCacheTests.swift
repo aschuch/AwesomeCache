@@ -173,5 +173,33 @@ class AwesomeCacheTests: XCTestCase {
             XCTAssertNotNil(afterObject)
         })
     }
+
+  func testDictionaryFuncs() {
+    let cache = try! Cache<NSString>(name: "testDictionaryFuncs")
+
+    var dict = [String: NSString?]()
+    for i in 1 ... 100 {
+      let key = String(i)
+      let value = String(i * 10) as NSString
+
+      dict[key] = value
+      cache.setObject(value, forKey: key)
+    }
+
+    for key in dict.keys {
+      XCTAssertEqual(dict[key]!, cache.objectForKey(key), "1 to 100 test failed")
+    }
+
+    cache.setObject("value", forKey: "testnil1")
+    cache.setObject("value", forKey: "testnil2")
+    cache.removeObjectForKey("testnil1")
+
+    dict = cache.dictionaryWithValuesForKeys(keysForNullableObjects: ["testnil1", "testnil2"])
+
+    let t = cache.objectForKey("testnil2")
+
+    XCTAssertNil(dict["testnil1"]!)
+    XCTAssertNotNil(dict["testnil2"]!)
+  }
     
 }

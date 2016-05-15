@@ -1,6 +1,7 @@
 # Awesome Cache
 
 [![Build Status](https://travis-ci.org/aschuch/AwesomeCache.svg)](https://travis-ci.org/aschuch/AwesomeCache)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/AwesomeCache.svg)](https://img.shields.io/cocoapods/v/AwesomeCache.svg)
 ![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)
 ![Swift 2](https://img.shields.io/badge/Swift-2.1-orange.svg)
 

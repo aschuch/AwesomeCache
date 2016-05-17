@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target= "2.0"
   s.source                = { :git => "https://github.com/aschuch/AwesomeCache.git", :tag => s.version }
   s.requires_arc          = true
-  s.source_files          = "AwesomeCache/Cache.swift", "AwesomeCache/CacheObject.swift"
+  s.source_files          = "AwesomeCache/Cache.swift", "AwesomeCache/CacheObject.swift", "AwesomeCache/NSKeyedUnarchiverWrapper.{h,m}"
 end

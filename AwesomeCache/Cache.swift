@@ -20,8 +20,7 @@ public class Cache<T: NSCoding> {
 	
 	internal let cache = NSCache() // marked internal for testing
 	private let fileManager = NSFileManager()
-	private let diskWriteQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskWriteQueue", DISPATCH_QUEUE_SERIAL)
-	private let diskReadQueue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.diskReadQueue", DISPATCH_QUEUE_SERIAL)
+	private let diskReadWriteQueue = dispatch_queue_create("com.aschuch.cache.diskQueue", DISPATCH_QUEUE_CONCURRENT)
     
     /// Typealias to define the reusability in declaration of the closures.
     public typealias CacheBlockClosure = (T, CacheExpiry) -> Void
@@ -112,7 +111,7 @@ public class Cache<T: NSCoding> {
         
         if possibleObject == nil {
             // Try to load object from disk (synchronously)
-            dispatch_sync(diskReadQueue) {
+            dispatch_sync(diskReadWriteQueue) {
                 if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
                     possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
                 }
@@ -154,7 +153,7 @@ public class Cache<T: NSCoding> {
         cache.setObject(cacheObject, forKey: key)
         
         // Write object to disk (asyncronously)
-        dispatch_async(diskWriteQueue) {
+        dispatch_barrier_async(diskReadWriteQueue) {
             if let path = self.urlForKey(key).path {
                 NSKeyedArchiver.archiveRootObject(cacheObject, toFile: path)
             }
@@ -171,7 +170,7 @@ public class Cache<T: NSCoding> {
 	public func removeObjectForKey(key: String) {
 		cache.removeObjectForKey(key)
 		
-		dispatch_async(diskWriteQueue) {
+		dispatch_barrier_async(diskReadWriteQueue) {
 			let url = self.urlForKey(key)
             let _ = try? self.fileManager.removeItemAtURL(url)
 		}
@@ -183,7 +182,7 @@ public class Cache<T: NSCoding> {
 	public func removeAllObjects(completion: (() -> Void)? = nil) {
 		cache.removeAllObjects()
 		
-		dispatch_async(diskWriteQueue) {
+		dispatch_barrier_async(diskReadWriteQueue) {
             let keys = self.allKeys()
 			
             for key in keys {
@@ -202,7 +201,7 @@ public class Cache<T: NSCoding> {
 	
 	/// Removes all expired objects from the cache.
 	public func removeExpiredObjects() {
-		dispatch_async(diskWriteQueue) {
+		dispatch_barrier_async(diskReadWriteQueue) {
             let keys = self.allKeys()
 			
 			for key in keys {

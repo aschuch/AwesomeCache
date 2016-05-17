@@ -105,31 +105,41 @@ public class Cache<T: NSCoding> {
     ///
     /// - returns: The cached object for the given name, or nil
 	public func objectForKey(key: String) -> T? {
-		
+        return self.objectForKey(key, lockAlreadyHeld: false)
+	}
+
+    private func objectForKey(key: String, lockAlreadyHeld: Bool) -> T? {
         // Check if object exists in local cache
         var possibleObject = cache.objectForKey(key) as? CacheObject
-        
+
         if possibleObject == nil {
-            // Try to load object from disk (synchronously)
-            dispatch_sync(diskReadWriteQueue) {
+            func readFromDisk() {
                 if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
                     possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
                 }
             }
+
+            // Try to load object from disk (synchronously)
+            if lockAlreadyHeld {
+                readFromDisk()
+            }
+            else {
+                dispatch_sync(diskReadWriteQueue, readFromDisk)
+            }
         }
-		
-		// Check if object is not already expired and return
-		// Delete object if expired
-		if let object = possibleObject {
-			if !object.isExpired() {
-				return object.value as? T
-			} else {
-				removeObjectForKey(key)
-			}
-		}
-		
-		return nil
-	}
+
+        // Check if object is not already expired and return
+        // Delete object if expired
+        if let object = possibleObject {
+            if !object.isExpired() {
+                return object.value as? T
+            } else {
+                removeObjectForKey(key)
+            }
+        }
+        
+        return nil
+    }
 	
 	
 	// MARK: Set object
@@ -206,7 +216,7 @@ public class Cache<T: NSCoding> {
 			
 			for key in keys {
 				// `objectForKey:` deletes the object if it is expired
-				self.objectForKey(key)
+				self.objectForKey(key, lockAlreadyHeld: true)
 			}
 		}
 	}

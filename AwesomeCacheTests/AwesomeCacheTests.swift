@@ -100,6 +100,19 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNil(cache.objectForKey("2Seconds"), "Expires in 2 seconds")
         XCTAssertNil(cache.objectForKey("atDate"), "Expires in 3 seconds")
     }
+
+    func testRemoveAllExpiredObjects() {
+        let cache = try! Cache<NSString>(name: "testRemoveAllExpiredObjects")
+
+        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
+        cache.setObject("AlreadyExpired", forKey: "alreadyExpired", expires: .Date(NSDate().dateByAddingTimeInterval(-1)))
+
+        cache.cache.removeAllObjects() // Prevent the in-memory cache to return the object when trying to read the expiration date
+        cache.removeExpiredObjects()
+
+        XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
+        XCTAssertNil(cache.objectForKey("AlreadyExpired"), "Already expired")
+    }
     
     func testCacheBlockExecuted() {
         let cache = try! Cache<NSString>(name: "testCacheBlockExecuted")

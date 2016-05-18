@@ -20,7 +20,7 @@ public class Cache<T: NSCoding> {
 
     internal let cache = NSCache() // marked internal for testing
     private let fileManager = NSFileManager()
-    private let queue: dispatch_queue_t = dispatch_queue_create("com.aschuch.cache.queue", DISPATCH_QUEUE_SERIAL)
+    private let queue = dispatch_queue_create("com.aschuch.cache.diskQueue", DISPATCH_QUEUE_CONCURRENT)
 
     /// Typealias to define the reusability in declaration of the closures.
     public typealias CacheBlockClosure = (T, CacheExpiry) -> Void
@@ -107,7 +107,7 @@ public class Cache<T: NSCoding> {
         var object: CacheObject?
 
         dispatch_sync(queue) {
-           object = self.read(key)
+            object = self.read(key)
         }
 
         // Check if object is not already expired and return
@@ -144,11 +144,10 @@ public class Cache<T: NSCoding> {
         let expiryDate = expiryDateForCacheExpiry(expires)
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
 
-        dispatch_sync(queue) {
+        dispatch_barrier_sync(queue) {
             self.add(cacheObject, key: key)
         }
     }
-
 
     // MARK: Remove objects
 
@@ -158,7 +157,7 @@ public class Cache<T: NSCoding> {
     public func removeObjectForKey(key: String) {
         cache.removeObjectForKey(key)
 
-        dispatch_sync(queue) {
+        dispatch_barrier_sync(queue) {
             self.removeFromDisk(key)
         }
     }
@@ -166,19 +165,16 @@ public class Cache<T: NSCoding> {
     /// Removes all objects from the cache.
     public func removeAllObjects() {
         cache.removeAllObjects()
-
-        dispatch_sync(queue) {
+        
+        dispatch_barrier_sync(queue) {
             let keys = self.allKeys()
             keys.forEach(self.removeFromDisk)
         }
     }
 
-
-    // MARK: Remove Expired Objects
-
     /// Removes all expired objects from the cache.
     public func removeExpiredObjects() {
-        dispatch_sync(queue) {
+        dispatch_barrier_sync(queue) {
             let keys = self.allKeys()
 
             for key in keys {
@@ -190,7 +186,6 @@ public class Cache<T: NSCoding> {
             }
         }
     }
-
 
     // MARK: Subscripting
 
@@ -206,7 +201,6 @@ public class Cache<T: NSCoding> {
             }
         }
     }
-
 
     // MARK: Private Helper (not thread safe)
 
@@ -228,7 +222,7 @@ public class Cache<T: NSCoding> {
 
         // Otherwise, read from disk
         if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
-            return NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
+            return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
         }
 
         return nil
@@ -240,26 +234,29 @@ public class Cache<T: NSCoding> {
         _ = try? self.fileManager.removeItemAtURL(url)
     }
 
+
+    // MARK: Private Helper
+
     private func allKeys() -> [String] {
         let urls = try? self.fileManager.contentsOfDirectoryAtURL(self.cacheDirectory, includingPropertiesForKeys: nil, options: [])
         return urls?.flatMap { $0.URLByDeletingPathExtension?.lastPathComponent } ?? []
     }
-    
+
     private func urlForKey(key: String) -> NSURL {
         let k = sanitizedKey(key)
         return cacheDirectory
             .URLByAppendingPathComponent(k)
             .URLByAppendingPathExtension("cache")
     }
-    
+
     private func sanitizedKey(key: String) -> String {
         return key.stringByReplacingOccurrencesOfString("[^a-zA-Z0-9_]+", withString: "-", options: .RegularExpressionSearch, range: nil)
     }
-    
+
     private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
         switch expiry {
         case .Never:
-            return NSDate.distantFuture() 
+            return NSDate.distantFuture()
         case .Seconds(let seconds):
             return NSDate().dateByAddingTimeInterval(seconds)
         case .Date(let date):

@@ -38,7 +38,7 @@ public class Cache<T: NSCoding> {
     ///                             adds the given value as an NSFileManager attribute.
     ///
     ///  - returns:	A new cache with the given name and directory
-    public init(name: String, directory: NSURL?, fileProtection: String?) throws {
+    public init(name: String, directory: NSURL?, fileProtection: String? = nil) throws {
         self.name = name
         cache.name = name
 

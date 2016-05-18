@@ -149,7 +149,7 @@ class AwesomeCacheTests: XCTestCase {
         cache.removeExpiredObjects()
 
         XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
-        XCTAssertNil(cache.objectForKey("AlreadyExpired"), "Already expired")
+        XCTAssertNil(cache.objectForKey("alreadyExpired"), "Already expired")
     }
 
     func testCacheBlockExecuted() {

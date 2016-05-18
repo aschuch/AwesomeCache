@@ -115,7 +115,7 @@ public class Cache<T: NSCoding> {
         if possibleObject == nil {
             func readFromDisk() {
                 if let path = self.urlForKey(key).path where self.fileManager.fileExistsAtPath(path) {
-                    possibleObject = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? CacheObject
+                    possibleObject = _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
                 }
             }
 

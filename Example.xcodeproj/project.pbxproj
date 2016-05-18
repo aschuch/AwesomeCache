@@ -25,6 +25,11 @@
 		4DC91FB01A7C54B200C81E10 /* AwesomeCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC91F981A7C54B200C81E10 /* AwesomeCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4DC91FBA1A7C552900C81E10 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
 		4DC91FBB1A7C552900C81E10 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
+		BF482C3D1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF482C3E1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF482C3F1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
+		BF482C401CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
+		BF482C411CEBE75A002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +88,8 @@
 		4DC91FAB1A7C54B200C81E10 /* AwesomeCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwesomeCacheTests.swift; sourceTree = "<group>"; };
 		4DC91FB81A7C552900C81E10 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		4DC91FB91A7C552900C81E10 /* CacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheObject.swift; sourceTree = "<group>"; };
+		BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiverWrapper.h; sourceTree = "<group>"; };
+		BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiverWrapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +182,8 @@
 				4DC91FB81A7C552900C81E10 /* Cache.swift */,
 				4DC91FB91A7C552900C81E10 /* CacheObject.swift */,
 				4DC91F9C1A7C54B200C81E10 /* AwesomeCache.h */,
+				BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */,
+				BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */,
 				4DC91F9A1A7C54B200C81E10 /* Supporting Files */,
 			);
 			path = AwesomeCache;
@@ -213,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D81D4A71C417019009A66A7 /* AwesomeCache.h in Headers */,
+				BF482C3E1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D81D4A61C417012009A66A7 /* AwesomeCache.h in Headers */,
+				BF482C411CEBE75A002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DC91F9D1A7C54B200C81E10 /* AwesomeCache.h in Headers */,
+				BF482C3D1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +346,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Alexander Schuch";
 				TargetAttributes = {
@@ -435,6 +447,7 @@
 			files = (
 				4D81D4AE1C417085009A66A7 /* Cache.swift in Sources */,
 				4D81D4B01C417088009A66A7 /* CacheObject.swift in Sources */,
+				BF482C401CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +466,7 @@
 			files = (
 				4DC91FBA1A7C552900C81E10 /* Cache.swift in Sources */,
 				4DC91FBB1A7C552900C81E10 /* CacheObject.swift in Sources */,
+				BF482C3F1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,6 +626,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -626,6 +641,7 @@
 				PRODUCT_NAME = AwesomeCache;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -637,6 +653,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

@@ -101,9 +101,11 @@ public class Cache<T: NSCoding> {
     /// If an object is already expired, `nil` will be returned.
     ///
     /// - parameter key: The name of the object that should be returned
+    /// - parameter returnExpiredObjectIfPresent: If set to `true`, an expired 
+    ///             object may be returned if present. Defaults to `false`.
     ///
     /// - returns: The cached object for the given name, or nil
-    public func objectForKey(key: String) -> T? {
+    public func objectForKey(key: String, returnExpiredObjectIfPresent: Bool = false) -> T? {
         var object: CacheObject?
 
         dispatch_sync(queue) {
@@ -111,7 +113,7 @@ public class Cache<T: NSCoding> {
         }
 
         // Check if object is not already expired and return
-        if let object = object where !object.isExpired() {
+        if let object = object where !object.isExpired() || returnExpiredObjectIfPresent {
             return object.value as? T
         }
 

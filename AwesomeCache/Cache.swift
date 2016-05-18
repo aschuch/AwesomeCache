@@ -34,9 +34,11 @@ public class Cache<T: NSCoding> {
     /// - parameter name: Name of this cache
     ///	- parameter directory:  Objects in this cache are persisted to this directory.
     ///                         If no directory is specified, a new directory is created in the system's Caches directory
+    /// - parameter fileProtection: Needs to be a valid value for `NSFileProtectionKey` (i.e. `NSFileProtectionNone`) and 
+    ///                             adds the given value as an NSFileManager attribute.
     ///
     ///  - returns:	A new cache with the given name and directory
-    public init(name: String, directory: NSURL?) throws {
+    public init(name: String, directory: NSURL?, fileProtection: String?) throws {
         self.name = name
         cache.name = name
 
@@ -48,6 +50,11 @@ public class Cache<T: NSCoding> {
         }
 
         // Create directory on disk if needed
+        if let fileProtection = fileProtection {
+            // Set the correct NSFileProtectionKey
+            let protection = [NSFileProtectionKey: fileProtection]
+            try fileManager.setAttributes(protection, ofItemAtPath: cacheDirectory.path!)
+        }
         try fileManager.createDirectoryAtURL(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
     }
 

@@ -3,8 +3,13 @@ import Foundation
 /// Represents the expiry of a cached object
 public enum CacheExpiry {
 	case Never
-	case Seconds(NSTimeInterval)
 	case Date(NSDate)
+	case Seconds(NSTimeInterval)
+	case Minutes(Int)
+	case Hours(Int)
+	case Days(Int)
+	case Months(Int)
+	case Years(Int)
 }
 
 /// A generic cache that persists objects to disk and is backed by a NSCache.
@@ -257,13 +262,36 @@ public class Cache<T: NSCoding> {
 	}
 
 	private func expiryDateForCacheExpiry(expiry: CacheExpiry) -> NSDate {
+		let now = NSDate()
+
 		switch expiry {
 		case .Never:
 			return NSDate.distantFuture() 
 		case .Seconds(let seconds):
-			return NSDate().dateByAddingTimeInterval(seconds)
+			return now.dateByAddingTimeInterval(seconds)
 		case .Date(let date):
 			return date
+		default:
+			break
 		}
+		
+		let offsetComponents = NSDateComponents()
+		
+		switch expiry {
+		case .Hours(let hours):
+			offsetComponents.hour = hours
+		case .Days(let days):
+			offsetComponents.day = days
+		case .Months(let months):
+			offsetComponents.month = months
+		case .Years(let years):
+			offsetComponents.year = years
+		default:
+			offsetComponents.hour = 2
+		}
+		
+		let cal = NSCalendar.currentCalendar()
+		
+		return cal.dateByAddingComponents(offsetComponents, toDate: now, options: NSCalendarOptions(rawValue: 0)) ?? now
 	}
 }

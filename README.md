@@ -1,4 +1,4 @@
-# Awesome Cache
+# Awesome Cache 3
 
 [![Build Status](https://travis-ci.org/aschuch/AwesomeCache.svg)](https://travis-ci.org/aschuch/AwesomeCache)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/AwesomeCache.svg)](https://img.shields.io/cocoapods/v/AwesomeCache.svg)
@@ -31,7 +31,7 @@ AwesomeCache 3 is designed to have a sync API, making it easy to reason about th
 The internals of the cache use a concurrent dispatch queue, that syncs reads and writes for thread safety. In case a particular caching operation blocks your main thread for too long, consider offloading the read and write operations to a different thread.
 
 ```swift
-dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 	cache["name"] = "Alex"
 }
 ```

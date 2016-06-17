@@ -50,12 +50,13 @@ public class Cache<T: NSCoding> {
         }
 
         // Create directory on disk if needed
+        try fileManager.createDirectoryAtURL(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+
         if let fileProtection = fileProtection {
             // Set the correct NSFileProtectionKey
             let protection = [NSFileProtectionKey: fileProtection]
             try fileManager.setAttributes(protection, ofItemAtPath: cacheDirectory.path!)
         }
-        try fileManager.createDirectoryAtURL(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
     }
 
     /// Convenience Initializer

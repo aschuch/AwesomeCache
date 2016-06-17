@@ -49,13 +49,14 @@ public class Cache<T: NSCoding> {
             cacheDirectory = url.URLByAppendingPathComponent("com.aschuch.cache/\(name)")
         }
 
+        try fileManager.createDirectoryAtURL(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+
         // Create directory on disk if needed
         if let fileProtection = fileProtection {
             // Set the correct NSFileProtectionKey
             let protection = [NSFileProtectionKey: fileProtection]
             try fileManager.setAttributes(protection, ofItemAtPath: cacheDirectory.path!)
         }
-        try fileManager.createDirectoryAtURL(cacheDirectory, withIntermediateDirectories: true, attributes: nil)
     }
 
     /// Convenience Initializer

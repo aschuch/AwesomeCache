@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = "AwesomeCache"
-  s.version               = "3.0"
+  s.version               = "3.0.1"
   s.summary               = "Delightful on-disk cache (written in Swift)"
   s.description           = "Delightful on-disk cache (written in Swift). Backed by NSCache for maximum performance and support for expiry of single objects."
   s.homepage              = "https://github.com/aschuch/AwesomeCache"

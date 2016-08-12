@@ -18,9 +18,9 @@ public class Cache<T: NSCoding> {
     public let name: String
     public let cacheDirectory: URL
 
-    internal let cache = NSCache() // marked internal for testing
+    internal let cache = NSCache<NSString, CacheObject>() // marked internal for testing
     private let fileManager = FileManager()
-    private let queue = DispatchQueue(label: "com.aschuch.cache.diskQueue", qos: DispatchQueue.Attributes.concurrent)
+    private let queue = DispatchQueue(label: "com.aschuch.cache.diskQueue", attributes: DispatchQueue.Attributes.concurrent)
 
     /// Typealias to define the reusability in declaration of the closures.
     public typealias CacheBlockClosure = (T, CacheExpiry) -> Void
@@ -121,7 +121,7 @@ public class Cache<T: NSCoding> {
         }
 
         // Check if object is not already expired and return
-        if let object = object where !object.isExpired() || returnExpiredObjectIfPresent {
+        if let object = object, !object.isExpired() || returnExpiredObjectIfPresent {
             return object.value as? T
         }
 
@@ -193,7 +193,7 @@ public class Cache<T: NSCoding> {
 
             for key in keys {
                 let possibleObject = self.read(key)
-                if let object = possibleObject where object.isExpired() {
+                if let object = possibleObject, object.isExpired() {
                     self.cache.removeObject(forKey: key)
                     self.removeFromDisk(key)
                 }
@@ -223,19 +223,19 @@ public class Cache<T: NSCoding> {
         cache.setObject(object, forKey: key)
 
         // Write object to disk
-        if let path = urlForKey(key).path {
-            NSKeyedArchiver.archiveRootObject(object, toFile: path)
-        }
+		let path = urlForKey(key).path
+        NSKeyedArchiver.archiveRootObject(object, toFile: path)
     }
 
     private func read(_ key: String) -> CacheObject? {
         // Check if object exists in local cache
-        if let object = cache.object(forKey: key) as? CacheObject {
+        if let object = cache.object(forKey: key) {
             return object
         }
 
         // Otherwise, read from disk
-        if let path = self.urlForKey(key).path where self.fileManager.fileExists(atPath: path) {
+		let path = self.urlForKey(key).path
+        if self.fileManager.fileExists(atPath: path) {
             return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
         }
 

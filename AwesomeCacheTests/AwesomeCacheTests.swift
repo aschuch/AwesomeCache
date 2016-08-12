@@ -13,7 +13,7 @@ import XCTest
 class AwesomeCacheTests: XCTestCase {
 
     func testCustomCachePath() {
-        let url = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first!
+        let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         let cache = try! Cache<NSString>(name: "CustomCachePath", directory: url)
 
         cache.setObject("AddedString", forKey: "add")
@@ -34,7 +34,7 @@ class AwesomeCacheTests: XCTestCase {
     func testGetExpiredObjectIfPresent() {
         let cache = try! Cache<NSString>(name: "testGetExpiredObject")
 
-        cache.setObject("AlreadyExpired", forKey: "alreadyExpired", expires: .Date(NSDate().dateByAddingTimeInterval(-1)))
+        cache.setObject("AlreadyExpired", forKey: "alreadyExpired", expires: .date(Date().addingTimeInterval(-1)))
 
         XCTAssertNotNil(cache.objectForKey("alreadyExpired", returnExpiredObjectIfPresent: true), "Already expired object was not returned")
         XCTAssertNil(cache.objectForKey("alreadyExpired"), "Already expired object was returned")
@@ -67,8 +67,8 @@ class AwesomeCacheTests: XCTestCase {
     func testRemoveExpiredObjects() {
         let cache = try! Cache<NSString>(name: "testRemoveExpiredObjects")
 
-        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
-        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))
+        cache.setObject("NeverExpires", forKey: "never", expires: .never)
+        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .seconds(2))
         cache.removeExpiredObjects()
 
         XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
@@ -104,9 +104,9 @@ class AwesomeCacheTests: XCTestCase {
     func testObjectExpiry() {
         let cache = try! Cache<NSString>(name: "testObjectExpiry")
 
-        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
-        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))
-        cache.setObject("ExpiresAtDate", forKey: "atDate", expires: .Date(NSDate().dateByAddingTimeInterval(4)))
+        cache.setObject("NeverExpires", forKey: "never", expires: .never)
+        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .seconds(2))
+        cache.setObject("ExpiresAtDate", forKey: "atDate", expires: .date(Date().addingTimeInterval(4)))
 
         XCTAssertNotNil(cache.objectForKey("never"), "Never expires")
         XCTAssertNotNil(cache.objectForKey("2Seconds"), "Expires in 2 seconds")
@@ -128,9 +128,9 @@ class AwesomeCacheTests: XCTestCase {
     func testAllObjects() {
         let cache = try! Cache<NSString>(name: "testAllObjects")
 
-        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
-        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .Seconds(2))
-        cache.setObject("ExpiresAtDate", forKey: "atDate", expires: .Date(NSDate().dateByAddingTimeInterval(4)))
+        cache.setObject("NeverExpires", forKey: "never", expires: .never)
+        cache.setObject("ExpiresIn2Seconds", forKey: "2Seconds", expires: .seconds(2))
+        cache.setObject("ExpiresAtDate", forKey: "atDate", expires: .date(Date().addingTimeInterval(4)))
 
         sleep(2)
 
@@ -151,8 +151,8 @@ class AwesomeCacheTests: XCTestCase {
     func testRemoveAllExpiredObjects() {
         let cache = try! Cache<NSString>(name: "testRemoveAllExpiredObjects")
 
-        cache.setObject("NeverExpires", forKey: "never", expires: .Never)
-        cache.setObject("AlreadyExpired", forKey: "alreadyExpired", expires: .Date(NSDate().dateByAddingTimeInterval(-1)))
+        cache.setObject("NeverExpires", forKey: "never", expires: .never)
+        cache.setObject("AlreadyExpired", forKey: "alreadyExpired", expires: .date(Date().addingTimeInterval(-1)))
 
         cache.cache.removeAllObjects() // Prevent the in-memory cache to return the object when trying to read the expiration date
         cache.removeExpiredObjects()
@@ -167,7 +167,7 @@ class AwesomeCacheTests: XCTestCase {
 
         cache.setObjectForKey("blockExecuted", cacheBlock: { successBlock, failureBlock in
             executed = true
-            successBlock("AddedString", .Never)
+            successBlock("AddedString", .never)
         }, completion: { object, isLoadedFromCache, error in
             XCTAssertNotNil(object, "Cached object not nil")
             XCTAssertEqual("AddedString", object!, "Get cached object")
@@ -190,7 +190,7 @@ class AwesomeCacheTests: XCTestCase {
 
         cache.setObjectForKey("blockNotExecuted", cacheBlock: { successBlock, failureBlock in
             executed = true
-            successBlock("SometingElse", .Never)
+            successBlock("SometingElse", .never)
         }, completion: { object, isLoadedFromCache, error in
             XCTAssertNotNil(object, "Cached object not nil")
             XCTAssertEqual("AddedString", object!, "Get cached object")

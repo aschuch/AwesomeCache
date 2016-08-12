@@ -172,7 +172,7 @@ public class Cache<T: NSCoding> {
         cache.removeObject(forKey: key)
 
         queue.sync(flags: .barrier, execute: {
-			self.removeFromDisk(forKey: key)
+            self.removeFromDisk(forKey: key)
         })
     }
 
@@ -195,7 +195,7 @@ public class Cache<T: NSCoding> {
                 let possibleObject = self.readObject(forKey: key)
                 if let object = possibleObject, object.isExpired() {
                     self.cache.removeObject(forKey: key)
-					self.removeFromDisk(forKey: key)
+                    self.removeFromDisk(forKey: key)
                 }
             }
         }) 

@@ -85,8 +85,8 @@ public class Cache<T: NSCoding> {
     ///                         The supplied success or failure blocks must be called upon completion.
     ///                         If the error block is called, the object is not cached and the completion block is invoked with this error.
     /// - parameter completion: Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
-    public func setObjectForKey(_ key: String, cacheBlock: (CacheBlockClosure, ErrorClosure) -> Void, completion: (T?, Bool, NSError?) -> Void) {
-        if let object = objectForKey(key) {
+    public func setObject(forKey key: String, cacheBlock: (CacheBlockClosure, ErrorClosure) -> Void, completion: (T?, Bool, NSError?) -> Void) {
+        if let object = object(forKey: key) {
             completion(object, true, nil)
         } else {
             let successBlock: CacheBlockClosure = { (obj, expires) in
@@ -113,11 +113,11 @@ public class Cache<T: NSCoding> {
     ///             object may be returned if present. Defaults to `false`.
     ///
     /// - returns: The cached object for the given name, or nil
-    public func objectForKey(_ key: String, returnExpiredObjectIfPresent: Bool = false) -> T? {
+    public func object(forKey key: String, returnExpiredObjectIfPresent: Bool = false) -> T? {
         var object: CacheObject?
 
         queue.sync {
-            object = self.read(key)
+            object = self.readObject(forKey: key)
         }
 
         // Check if object is not already expired and return
@@ -133,7 +133,7 @@ public class Cache<T: NSCoding> {
 
         queue.sync {
             let keys = self.allKeys()
-            let all = keys.map(self.read).flatMap { $0 }
+            let all = keys.map(self.readObject).flatMap { $0 }
             let filtered = includeExpired ? all : all.filter { !$0.isExpired() }
             objects = filtered.map { $0.value as? T }.flatMap { $0 }
         }
@@ -141,7 +141,7 @@ public class Cache<T: NSCoding> {
         return objects
     }
 
-	public func isOnMemoryForKey(_ key: String) -> Bool {
+	public func isOnMemory(forKey key: String) -> Bool {
 		return cache.object(forKey: key) != nil
 	}
 
@@ -159,7 +159,7 @@ public class Cache<T: NSCoding> {
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
 
         queue.sync(flags: .barrier, execute: {
-            self.add(cacheObject, key: key)
+            self.addObject(cacheObject, forKey: key)
         }) 
     }
 
@@ -168,12 +168,12 @@ public class Cache<T: NSCoding> {
     /// Removes an object from the cache.
     ///
     /// - parameter key: The key of the object that should be removed
-    public func removeObjectForKey(_ key: String) {
+    public func removeObject(forKey key: String) {
         cache.removeObject(forKey: key)
 
         queue.sync(flags: .barrier, execute: {
-            self.removeFromDisk(key)
-        }) 
+			self.removeFromDisk(forKey: key)
+        })
     }
 
     /// Removes all objects from the cache.
@@ -192,10 +192,10 @@ public class Cache<T: NSCoding> {
             let keys = self.allKeys()
 
             for key in keys {
-                let possibleObject = self.read(key)
+                let possibleObject = self.readObject(forKey: key)
                 if let object = possibleObject, object.isExpired() {
                     self.cache.removeObject(forKey: key)
-                    self.removeFromDisk(key)
+					self.removeFromDisk(forKey: key)
                 }
             }
         }) 
@@ -205,36 +205,36 @@ public class Cache<T: NSCoding> {
 
     public subscript(key: String) -> T? {
         get {
-            return objectForKey(key)
+            return object(forKey: key)
         }
         set(newValue) {
             if let value = newValue {
                 setObject(value, forKey: key)
             } else {
-                removeObjectForKey(key)
+                removeObject(forKey: key)
             }
         }
     }
 
     // MARK: Private Helper (not thread safe)
 
-    private func add(_ object: CacheObject, key: String) {
+    private func addObject(_ object: CacheObject, forKey key: String) {
         // Set object in local cache
         cache.setObject(object, forKey: key)
 
         // Write object to disk
-		let path = urlForKey(key).path
+		let path = url(forKey: key).path
         NSKeyedArchiver.archiveRootObject(object, toFile: path)
     }
 
-    private func read(_ key: String) -> CacheObject? {
+    private func readObject(forKey key: String) -> CacheObject? {
         // Check if object exists in local cache
         if let object = cache.object(forKey: key) {
             return object
         }
 
         // Otherwise, read from disk
-		let path = self.urlForKey(key).path
+		let path = self.url(forKey: key).path
         if self.fileManager.fileExists(atPath: path) {
             return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
         }
@@ -243,8 +243,8 @@ public class Cache<T: NSCoding> {
     }
 
     // Deletes an object from disk
-    private func removeFromDisk(_ key: String) {
-        let url = self.urlForKey(key)
+    private func removeFromDisk(forKey key: String) {
+        let url = self.url(forKey: key)
         _ = try? self.fileManager.removeItem(at: url)
     }
 
@@ -256,7 +256,7 @@ public class Cache<T: NSCoding> {
         return urls?.flatMap { $0.deletingPathExtension().lastPathComponent } ?? []
     }
 
-    private func urlForKey(_ key: String) -> URL {
+    private func url(forKey key: String) -> URL {
         let k = sanitizedKey(key)
         return cacheDirectory
             .appendingPathComponent(k)

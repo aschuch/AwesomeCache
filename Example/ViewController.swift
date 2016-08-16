@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func saveInCache(_ sender: AnyObject?) {
-        cache["myText"] = textView.text
+        cache["myText"] = textView.text as NSString
     }
 }
 

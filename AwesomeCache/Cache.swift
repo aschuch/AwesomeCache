@@ -85,7 +85,7 @@ public class Cache<T: NSCoding> {
     ///                         The supplied success or failure blocks must be called upon completion.
     ///                         If the error block is called, the object is not cached and the completion block is invoked with this error.
     /// - parameter completion: Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
-    public func setObject(forKey key: String, cacheBlock: (CacheBlockClosure, ErrorClosure) -> Void, completion: (T?, Bool, NSError?) -> Void) {
+    public func setObject(forKey key: String, cacheBlock: (CacheBlockClosure, ErrorClosure) -> Void, completion: @escaping (T?, Bool, NSError?) -> Void) {
         if let object = object(forKey: key) {
             completion(object, true, nil)
         } else {
@@ -142,7 +142,7 @@ public class Cache<T: NSCoding> {
     }
 
 	public func isOnMemory(forKey key: String) -> Bool {
-		return cache.object(forKey: key) != nil
+		return cache.object(forKey: key as NSString) != nil
 	}
 
 
@@ -169,7 +169,7 @@ public class Cache<T: NSCoding> {
     ///
     /// - parameter key: The key of the object that should be removed
     public func removeObject(forKey key: String) {
-        cache.removeObject(forKey: key)
+        cache.removeObject(forKey: key as NSString)
 
         queue.sync(flags: .barrier, execute: {
             self.removeFromDisk(forKey: key)
@@ -194,7 +194,7 @@ public class Cache<T: NSCoding> {
             for key in keys {
                 let possibleObject = self.readObject(forKey: key)
                 if let object = possibleObject, object.isExpired() {
-                    self.cache.removeObject(forKey: key)
+                    self.cache.removeObject(forKey: key as NSString)
                     self.removeFromDisk(forKey: key)
                 }
             }
@@ -220,7 +220,7 @@ public class Cache<T: NSCoding> {
 
     private func addObject(_ object: CacheObject, forKey key: String) {
         // Set object in local cache
-        cache.setObject(object, forKey: key)
+        cache.setObject(object, forKey: key as NSString)
 
         // Write object to disk
 		let path = url(forKey: key).path
@@ -229,7 +229,7 @@ public class Cache<T: NSCoding> {
 
     private func readObject(forKey key: String) -> CacheObject? {
         // Check if object exists in local cache
-        if let object = cache.object(forKey: key) {
+        if let object = cache.object(forKey: key as NSString) {
             return object
         }
 

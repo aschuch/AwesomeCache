@@ -33,7 +33,7 @@ class CacheObject: NSObject, NSCoding {
                 return nil
         }
 
-        self.value = val
+        self.value = val as AnyObject
         self.expiryDate = expiry
         super.init()
     }

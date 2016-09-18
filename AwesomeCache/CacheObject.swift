@@ -6,13 +6,13 @@ import Foundation
 /// 	 However, NSKeyedArchiver needs a concrete subclass of NSObject to work correctly
 class CacheObject: NSObject, NSCoding {
     let value: AnyObject
-    let expiryDate: NSDate
+    let expiryDate: Date
 
     /// Designated initializer.
     ///
     /// - parameter value:      An object that should be cached
     /// - parameter expiryDate: The expiry date of the given value
-    init(value: AnyObject, expiryDate: NSDate) {
+    init(value: AnyObject, expiryDate: Date) {
         self.value = value
         self.expiryDate = expiryDate
     }
@@ -28,23 +28,23 @@ class CacheObject: NSObject, NSCoding {
     /// NSCoding
 
     required init?(coder aDecoder: NSCoder) {
-        guard let val = aDecoder.decodeObjectForKey("value"),
-              let expiry = aDecoder.decodeObjectForKey("expiryDate") as? NSDate else {
+        guard let val = aDecoder.decodeObject(forKey: "value"),
+              let expiry = aDecoder.decodeObject(forKey: "expiryDate") as? Date else {
                 return nil
         }
 
-        self.value = val
+        self.value = val as AnyObject
         self.expiryDate = expiry
         super.init()
     }
 
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(value, forKey: "value")
-        aCoder.encodeObject(expiryDate, forKey: "expiryDate")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(value, forKey: "value")
+        aCoder.encode(expiryDate, forKey: "expiryDate")
     }
 }
 
-extension NSDate {
+extension Date {
     var isInThePast: Bool {
         return self.timeIntervalSinceNow < 0
     }

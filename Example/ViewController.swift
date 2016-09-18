@@ -20,12 +20,12 @@ class ViewController: UIViewController {
 		textView.text = (cache["myText"] as? String) ?? ""
 	}
     
-    @IBAction func reloadData(sender: AnyObject?) {
+    @IBAction func reloadData(_ sender: AnyObject?) {
         textView.text = (cache["myText"] as? String) ?? ""
     }
     
-    @IBAction func saveInCache(sender: AnyObject?) {
-        cache["myText"] = textView.text
+    @IBAction func saveInCache(_ sender: AnyObject?) {
+        cache["myText"] = textView.text as NSString?
     }
 }
 

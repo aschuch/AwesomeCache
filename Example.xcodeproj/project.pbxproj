@@ -18,6 +18,7 @@
 		4D81D4AF1C417085009A66A7 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
 		4D81D4B01C417088009A66A7 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
 		4D81D4B11C417088009A66A7 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
+		4D9EB67A1D8E963300EB0B76 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
 		4DC91F9D1A7C54B200C81E10 /* AwesomeCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DC91F9C1A7C54B200C81E10 /* AwesomeCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4DC91FA31A7C54B200C81E10 /* AwesomeCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC91F981A7C54B200C81E10 /* AwesomeCache.framework */; };
 		4DC91FAC1A7C54B200C81E10 /* AwesomeCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FAB1A7C54B200C81E10 /* AwesomeCacheTests.swift */; };
@@ -460,6 +461,7 @@
 			files = (
 				4D81D4AF1C417085009A66A7 /* Cache.swift in Sources */,
 				4D81D4B11C417088009A66A7 /* CacheObject.swift in Sources */,
+				4D9EB67A1D8E963300EB0B76 /* NSKeyedUnarchiverWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,6 +567,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -604,6 +607,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

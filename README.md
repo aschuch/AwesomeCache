@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/aschuch/AwesomeCache.svg)](https://travis-ci.org/aschuch/AwesomeCache)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/AwesomeCache.svg)](https://img.shields.io/cocoapods/v/AwesomeCache.svg)
 ![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)
-![Swift 2.3](https://img.shields.io/badge/Swift-2.3-orange.svg)
+![Swift 3.0](https://img.shields.io/badge/Swift-3.0-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey.svg)
 
 Delightful on-disk cache (written in Swift).
@@ -43,7 +43,7 @@ Objects can also be cached for a certain period of time.
 ```swift
 cache.setObject("Alex", forKey: "name", expires: .Never) // same as cache["name"] = "Alex"
 cache.setObject("Alex", forKey: "name", expires: .Seconds(2)) // name expires in 2 seconds
-cache.setObject("Alex", forKey: "name", expires: .Date(NSDate(timeIntervalSince1970: 1428364800))) // name expires on 4th of July 2015
+cache.setObject("Alex", forKey: "name", expires: .Date(Date(timeIntervalSince1970: 1428364800))) // name expires on 4th of July 2015
 ```
 
 If an object is accessed after its expiry date, it is automatically removed from the cache and deleted from disk.
@@ -54,7 +54,7 @@ However, you are responsible to delete expired objects regularly by calling `rem
 API responses are usually cached for a specific period of time. AwesomeCache provides an easy method to cache a block of asynchronous tasks.
 
 ```swift
-cache.setObjectForKey("name", cacheBlock: { success, failure in
+cache.setObject(forKey: "name", cacheBlock: { success, failure in
   // Perform tasks, e.g. call an API
   let response = ...
 

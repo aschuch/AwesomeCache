@@ -141,6 +141,10 @@ open class Cache<T: NSCoding> {
         return objects
     }
 
+    open func isOnMemory(forKey key: String) -> Bool {
+        return cache.object(forKey: key as NSString) != nil
+    }
+
 
     // MARK: Set object
 

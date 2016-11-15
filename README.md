@@ -80,7 +80,7 @@ Current Swift compatibility breakdown:
 
 | Swift Version | Framework Version |
 | ------------- | ----------------- |
-| 3.0           | master            |
+| 3.0           | 5.x               |
 | 2.3           | 4.x               |
 | 2.2           | 3.x               |
 

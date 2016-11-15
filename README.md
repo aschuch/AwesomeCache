@@ -110,7 +110,8 @@ Then run `pod install` with CocoaPods 0.36 or newer.
 
 #### Manually
 
-Just drag and drop the two `.swift` files in the `AwesomeCache` folder into your project.
+Just drag and drop the two `.swift` files as well as the `NSKeyedUnarchiverWrapper.h/.m` files in the `AwesomeCache` folder into your project.
+If you are adding AwesomeCache to a Swift project, you also need to add an import for `NSKeyedUnarchiverWrapper.h` to your bridging header.
 
 ## Tests
 

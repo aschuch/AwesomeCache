@@ -41,9 +41,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 Objects can also be cached for a certain period of time.
 
 ```swift
-cache.setObject("Alex", forKey: "name", expires: .Never) // same as cache["name"] = "Alex"
-cache.setObject("Alex", forKey: "name", expires: .Seconds(2)) // name expires in 2 seconds
-cache.setObject("Alex", forKey: "name", expires: .Date(Date(timeIntervalSince1970: 1428364800))) // name expires on 4th of July 2015
+cache.setObject("Alex", forKey: "name", expires: .never) // same as cache["name"] = "Alex"
+cache.setObject("Alex", forKey: "name", expires: .seconds(2)) // name expires in 2 seconds
+cache.setObject("Alex", forKey: "name", expires: .date(Date(timeIntervalSince1970: 1428364800))) // name expires on 4th of July 2015
 ```
 
 If an object is accessed after its expiry date, it is automatically removed from the cache and deleted from disk.
@@ -58,7 +58,7 @@ cache.setObject(forKey: "name", cacheBlock: { success, failure in
   // Perform tasks, e.g. call an API
   let response = ...
 
-  success(response, .Seconds(300)) // Cache response for 5 minutes
+  success(response, .seconds(300)) // Cache response for 5 minutes
   // ... or failure(error)
 }, completion: { object, isLoadedFromCache, error in
 	if object {

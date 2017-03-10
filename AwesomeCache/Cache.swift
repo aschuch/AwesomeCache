@@ -85,7 +85,7 @@ open class Cache<T: NSCoding> {
     ///                         The supplied success or failure blocks must be called upon completion.
     ///                         If the error block is called, the object is not cached and the completion block is invoked with this error.
     /// - parameter completion: Called as soon as a cached object is available to use. The second parameter is true if the object was already cached.
-    open func setObject(forKey key: String, cacheBlock: (CacheBlockClosure, ErrorClosure) -> Void, completion: @escaping (T?, Bool, NSError?) -> Void) {
+    open func setObject(forKey key: String, cacheBlock: (@escaping CacheBlockClosure, @escaping ErrorClosure) -> Void, completion: @escaping (T?, Bool, NSError?) -> Void) {
         if let object = object(forKey: key) {
             completion(object, true, nil)
         } else {

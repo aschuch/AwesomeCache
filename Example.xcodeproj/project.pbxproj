@@ -27,6 +27,9 @@
 		4DC91FBA1A7C552900C81E10 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
 		4DC91FBB1A7C552900C81E10 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
 		551B98601E7E3C3100CDFD08 /* AwesomeCache-OS X.h in Headers */ = {isa = PBXBuildFile; fileRef = 551B985E1E7E3C3100CDFD08 /* AwesomeCache-OS X.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F331A21E7F4E2A00EAFD68 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
+		55F331A31E7F4E3400EAFD68 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
+		55F331A41E7F4E3600EAFD68 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
 		BF482C3D1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF482C3E1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF482C3F1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
@@ -548,6 +551,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F331A21E7F4E2A00EAFD68 /* Cache.swift in Sources */,
+				55F331A31E7F4E3400EAFD68 /* CacheObject.swift in Sources */,
+				55F331A41E7F4E3600EAFD68 /* NSKeyedUnarchiverWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -915,12 +921,12 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "AwesomeCache-OS X/Info.plist";
+				INFOPLIST_FILE = AwesomeCache/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_MODULE_NAME = AwesomeCache;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.AwesomeCache-OSX";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = AwesomeCache;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -947,12 +953,12 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "AwesomeCache-OS X/Info.plist";
+				INFOPLIST_FILE = AwesomeCache/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_MODULE_NAME = AwesomeCache;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.AwesomeCache-OSX";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = AwesomeCache;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1026,6 +1032,7 @@
 				551B98621E7E3C3100CDFD08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

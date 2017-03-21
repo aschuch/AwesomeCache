@@ -52,11 +52,14 @@ open class Cache<T: NSCoding> {
         // Create directory on disk if needed
         try fileManager.createDirectory(at: cacheDirectory, withIntermediateDirectories: true, attributes: nil)
 
+        #if os(iOS)
         if let fileProtection = fileProtection {
             // Set the correct NSFileProtectionKey
             let protection = [FileAttributeKey.protectionKey: fileProtection]
             try fileManager.setAttributes(protection, ofItemAtPath: cacheDirectory.path)
         }
+        #elseif os(OSX)
+        #endif
     }
 
     /// Convenience Initializer
@@ -236,7 +239,11 @@ open class Cache<T: NSCoding> {
         // Otherwise, read from disk
         let path = urlForKey(key).path
         if fileManager.fileExists(atPath: path) {
-            return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
+            #if os(iOS)
+                return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
+            #elseif os(OSX)
+                return NSKeyedUnarchiver.unarchiveObject(withFile: path) as? CacheObject
+            #endif
         }
 
         return nil

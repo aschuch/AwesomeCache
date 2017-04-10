@@ -26,36 +26,35 @@ open class Cache<T: NSCoding> {
     public typealias CacheBlockClosure = (T, CacheExpiry) -> Void
     public typealias ErrorClosure = (NSError?) -> Void
 
-
     // MARK: Initializers
 
     /// Designated initializer.
     ///
     /// - parameter name: Name of this cache
-    ///	- parameter directory:  Objects in this cache are persisted to this directory.
+    /// 	- parameter directory:  Objects in this cache are persisted to this directory.
     ///                         If no directory is specified, a new directory is created in the system's Caches directory
-    /// - parameter fileProtection: Needs to be a valid value for `NSFileProtectionKey` (i.e. `NSFileProtectionNone`) and 
+    /// - parameter fileProtection: Needs to be a valid value for `NSFileProtectionKey` (i.e. `NSFileProtectionNone`) and
     ///                             adds the given value as an NSFileManager attribute.
     ///
     ///  - returns:	A new cache with the given name and directory
     public init(name: String, directory: URL?, fileProtection: String? = nil) throws {
         self.name = name
-        cache.name = name
+        self.cache.name = name
 
         if let d = directory {
-            cacheDirectory = d
+            self.cacheDirectory = d
         } else {
             let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-            cacheDirectory = url.appendingPathComponent("com.aschuch.cache/\(name)")
+            self.cacheDirectory = url.appendingPathComponent("com.aschuch.cache/\(name)")
         }
 
         // Create directory on disk if needed
-        try fileManager.createDirectory(at: cacheDirectory, withIntermediateDirectories: true, attributes: nil)
+        try self.fileManager.createDirectory(at: self.cacheDirectory, withIntermediateDirectories: true, attributes: nil)
 
         if let fileProtection = fileProtection {
             // Set the correct NSFileProtectionKey
             let protection = [FileAttributeKey.protectionKey: fileProtection]
-            try fileManager.setAttributes(protection, ofItemAtPath: cacheDirectory.path)
+            try self.fileManager.setAttributes(protection, ofItemAtPath: self.cacheDirectory.path)
         }
     }
 
@@ -67,7 +66,6 @@ open class Cache<T: NSCoding> {
     public convenience init(name: String) throws {
         try self.init(name: name, directory: nil)
     }
-
 
     // MARK: Awesome caching
 
@@ -89,12 +87,12 @@ open class Cache<T: NSCoding> {
         if let object = object(forKey: key) {
             completion(object, true, nil)
         } else {
-            let successBlock: CacheBlockClosure = { (obj, expires) in
+            let successBlock: CacheBlockClosure = { obj, expires in
                 self.setObject(obj, forKey: key, expires: expires)
                 completion(obj, false, nil)
             }
 
-            let failureBlock: ErrorClosure = { (error) in
+            let failureBlock: ErrorClosure = { error in
                 completion(nil, false, error)
             }
 
@@ -102,21 +100,20 @@ open class Cache<T: NSCoding> {
         }
     }
 
-
     // MARK: Get object
 
     /// Looks up and returns an object with the specified name if it exists.
     /// If an object is already expired, `nil` will be returned.
     ///
     /// - parameter key: The name of the object that should be returned
-    /// - parameter returnExpiredObjectIfPresent: If set to `true`, an expired 
+    /// - parameter returnExpiredObjectIfPresent: If set to `true`, an expired
     ///             object may be returned if present. Defaults to `false`.
     ///
     /// - returns: The cached object for the given name, or nil
     open func object(forKey key: String, returnExpiredObjectIfPresent: Bool = false) -> T? {
         var object: CacheObject?
 
-        queue.sync {
+        self.queue.sync {
             object = self.read(key)
         }
 
@@ -131,7 +128,7 @@ open class Cache<T: NSCoding> {
     open func allObjects(includeExpired: Bool = false) -> [T] {
         var objects = [T]()
 
-        queue.sync {
+        self.queue.sync {
             let keys = self.allKeys()
             let all = keys.map(self.read).flatMap { $0 }
             let filtered = includeExpired ? all : all.filter { !$0.isExpired() }
@@ -142,9 +139,8 @@ open class Cache<T: NSCoding> {
     }
 
     open func isOnMemory(forKey key: String) -> Bool {
-        return cache.object(forKey: key as NSString) != nil
+        return self.cache.object(forKey: key as NSString) != nil
     }
-
 
     // MARK: Set object
 
@@ -155,12 +151,12 @@ open class Cache<T: NSCoding> {
     /// - parameter forKey:	A key that represents this object in the cache
     /// - parameter expires: The CacheExpiry that indicates when the given object should be expired
     open func setObject(_ object: T, forKey key: String, expires: CacheExpiry = .never) {
-        let expiryDate = expiryDateForCacheExpiry(expires)
+        let expiryDate = self.expiryDateForCacheExpiry(expires)
         let cacheObject = CacheObject(value: object, expiryDate: expiryDate)
 
-        queue.sync(flags: .barrier, execute: {
+        self.queue.sync(flags: .barrier) {
             self.add(cacheObject, key: key)
-        }) 
+        }
     }
 
     // MARK: Remove objects
@@ -169,36 +165,36 @@ open class Cache<T: NSCoding> {
     ///
     /// - parameter key: The key of the object that should be removed
     open func removeObject(forKey key: String) {
-        cache.removeObject(forKey: key as NSString)
+        self.cache.removeObject(forKey: key as NSString)
 
-        queue.sync(flags: .barrier, execute: {
+        self.queue.sync(flags: .barrier) {
             self.removeFromDisk(key)
-        }) 
+        }
     }
 
     /// Removes all objects from the cache.
     open func removeAllObjects() {
-        cache.removeAllObjects()
-        
-        queue.sync(flags: .barrier, execute: {
+        self.cache.removeAllObjects()
+
+        self.queue.sync(flags: .barrier) {
             let keys = self.allKeys()
             keys.forEach(self.removeFromDisk)
-        }) 
+        }
     }
 
     /// Removes all expired objects from the cache.
     open func removeExpiredObjects() {
-        queue.sync(flags: .barrier, execute: {
+        self.queue.sync(flags: .barrier) {
             let keys = self.allKeys()
 
             for key in keys {
                 let possibleObject = self.read(key)
-                if let object = possibleObject , object.isExpired() {
+                if let object = possibleObject, object.isExpired() {
                     self.cache.removeObject(forKey: key as NSString)
                     self.removeFromDisk(key)
                 }
             }
-        }) 
+        }
     }
 
     // MARK: Subscripting
@@ -220,10 +216,10 @@ open class Cache<T: NSCoding> {
 
     fileprivate func add(_ object: CacheObject, key: String) {
         // Set object in local cache
-        cache.setObject(object, forKey: key as NSString)
+        self.cache.setObject(object, forKey: key as NSString)
 
         // Write object to disk
-        let path = urlForKey(key).path
+        let path = self.urlForKey(key).path
         NSKeyedArchiver.archiveRootObject(object, toFile: path)
     }
 
@@ -234,8 +230,8 @@ open class Cache<T: NSCoding> {
         }
 
         // Otherwise, read from disk
-        let path = urlForKey(key).path
-        if fileManager.fileExists(atPath: path) {
+        let path = self.urlForKey(key).path
+        if self.fileManager.fileExists(atPath: path) {
             return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
         }
 
@@ -248,19 +244,18 @@ open class Cache<T: NSCoding> {
         _ = try? self.fileManager.removeItem(at: url)
     }
 
-
     // MARK: Private Helper
 
     fileprivate func allKeys() -> [String] {
-        let urls = try? self.fileManager.contentsOfDirectory(at: self.cacheDirectory, includingPropertiesForKeys: nil, options: [])
-        return urls?.flatMap { $0.deletingPathExtension().lastPathComponent } ?? []
+        let urls = (try? self.fileManager.contentsOfDirectory(at: self.cacheDirectory, includingPropertiesForKeys: nil, options: [])) ?? []
+        return urls.flatMap { url in
+            url.deletingPathExtension().lastPathComponent
+        }
     }
 
     fileprivate func urlForKey(_ key: String) -> URL {
-        let k = sanitizedKey(key)
-        return cacheDirectory
-            .appendingPathComponent(k)
-            .appendingPathExtension("cache")
+        let k = self.sanitizedKey(key)
+        return self.cacheDirectory.appendingPathComponent(k).appendingPathExtension("cache")
     }
 
     fileprivate func sanitizedKey(_ key: String) -> String {

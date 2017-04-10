@@ -24,13 +24,12 @@ class CacheObject: NSObject, NSCoding {
         return expiryDate.isInThePast
     }
 
-
     /// NSCoding
 
     required init?(coder aDecoder: NSCoder) {
         guard let val = aDecoder.decodeObject(forKey: "value"),
-              let expiry = aDecoder.decodeObject(forKey: "expiryDate") as? Date else {
-                return nil
+            let expiry = aDecoder.decodeObject(forKey: "expiryDate") as? Date else {
+            return nil
         }
 
         self.value = val as AnyObject
@@ -39,8 +38,8 @@ class CacheObject: NSObject, NSCoding {
     }
 
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(value, forKey: "value")
-        aCoder.encode(expiryDate, forKey: "expiryDate")
+        aCoder.encode(self.value, forKey: "value")
+        aCoder.encode(self.expiryDate, forKey: "expiryDate")
     }
 }
 

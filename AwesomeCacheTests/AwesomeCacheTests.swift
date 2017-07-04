@@ -64,6 +64,22 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNil(cache.object(forKey: "remove 2"), "Removed object should be nil")
     }
 
+    func testRemoveAllObjectsFromMemory() {
+        let cache = try! Cache<NSString>(name: "testRemoveAllObjectsFromMemory")
+
+        cache.setObject("AddedString 1", forKey: "remove only from memory 1")
+        cache.setObject("AddedString 2", forKey: "remove only from memory 2")
+        XCTAssertNotNil(cache.object(forKey: "remove only from memory 1"), "Added object should not be nil")
+        XCTAssertNotNil(cache.object(forKey: "remove only from memory 2"), "Added object should not be nil")
+
+        cache.removeAllObjectsFromMemory()
+        XCTAssertNotNil(cache.object(forKey: "remove only from memory 1"), "Removed object should not be nil")
+        XCTAssertNotNil(cache.object(forKey: "remove only from memory 2"), "Removed object should not be nil")
+
+        XCTAssertNil(cache.cache.object(forKey: "remove only from memory 1"), "Removed object should be nil in NSCache")
+        XCTAssertNil(cache.cache.object(forKey: "remove only from memory 2"), "Removed object should be nil in NSCache")
+    }
+
     func testRemoveExpiredObjects() {
         let cache = try! Cache<NSString>(name: "testRemoveExpiredObjects")
 

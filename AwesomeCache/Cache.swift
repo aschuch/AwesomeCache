@@ -201,6 +201,11 @@ open class Cache<T: NSCoding> {
         }) 
     }
 
+    /// Removes all objects from memory (and keep them in disk cache).
+    open func removeAllObjectsFromMemory() {
+        cache.removeAllObjects()
+    }
+
     // MARK: Subscripting
 
     open subscript(key: String) -> T? {

@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode8
+osx_image: xcode10.2
 env:
   global:
   - LC_CTYPE=en_US.UTF-8
@@ -9,7 +9,7 @@ env:
   - TVOS_FRAMEWORK_SCHEME="AwesomeCache-tvOS"
   - WATCHOS_FRAMEWORK_SCHEME="AwesomeCache-watchOS"
   matrix:
-    - DESTINATION="OS=10.0,name=iPhone 6"          SCHEME="$IOS_FRAMEWORK_SCHEME"     SDK="iphonesimulator10.0"
+    - DESTINATION="OS=12.2,name=iPhone 8"          SCHEME="$IOS_FRAMEWORK_SCHEME"     SDK="iphonesimulator12.2"
     # - DESTINATION="OS=9.2,name=Apple TV 1080p"     SCHEME="$TVOS_FRAMEWORK_SCHEME"    SDK="$TVOS_SDK"
     # - DESTINATION="OS=2.2,name=Apple Watch - 42mm" SCHEME="$WATCHOS_FRAMEWORK_SCHEME" SDK="$WATCHOS_SDK"
 script:

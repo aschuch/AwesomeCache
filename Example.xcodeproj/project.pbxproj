@@ -26,6 +26,10 @@
 		4DC91FB01A7C54B200C81E10 /* AwesomeCache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC91F981A7C54B200C81E10 /* AwesomeCache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4DC91FBA1A7C552900C81E10 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
 		4DC91FBB1A7C552900C81E10 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
+		551B98601E7E3C3100CDFD08 /* AwesomeCache-OS X.h in Headers */ = {isa = PBXBuildFile; fileRef = 551B985E1E7E3C3100CDFD08 /* AwesomeCache-OS X.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F331A21E7F4E2A00EAFD68 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB81A7C552900C81E10 /* Cache.swift */; };
+		55F331A31E7F4E3400EAFD68 /* CacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC91FB91A7C552900C81E10 /* CacheObject.swift */; };
+		55F331A41E7F4E3600EAFD68 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
 		BF482C3D1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF482C3E1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF482C3F1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */; };
@@ -89,6 +93,9 @@
 		4DC91FAB1A7C54B200C81E10 /* AwesomeCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwesomeCacheTests.swift; sourceTree = "<group>"; };
 		4DC91FB81A7C552900C81E10 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		4DC91FB91A7C552900C81E10 /* CacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheObject.swift; sourceTree = "<group>"; };
+		551B985C1E7E3C3100CDFD08 /* AwesomeCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AwesomeCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		551B985E1E7E3C3100CDFD08 /* AwesomeCache-OS X.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AwesomeCache-OS X.h"; sourceTree = "<group>"; };
+		551B985F1E7E3C3100CDFD08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF482C3B1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiverWrapper.h; sourceTree = "<group>"; };
 		BF482C3C1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiverWrapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +138,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		551B98581E7E3C3100CDFD08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -140,6 +154,7 @@
 				4D44D2891971627700EC5FDB /* Example */,
 				4DC91F991A7C54B200C81E10 /* AwesomeCache */,
 				4DC91FA81A7C54B200C81E10 /* AwesomeCacheTests */,
+				551B985D1E7E3C3100CDFD08 /* AwesomeCache-OS X */,
 				4D44D2881971627700EC5FDB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -152,6 +167,7 @@
 				4DC91FA21A7C54B200C81E10 /* AwesomeCacheTests.xctest */,
 				4D81D4821C416F3C009A66A7 /* AwesomeCache.framework */,
 				4D81D48F1C416F6F009A66A7 /* AwesomeCache.framework */,
+				551B985C1E7E3C3100CDFD08 /* AwesomeCache.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,6 +231,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		551B985D1E7E3C3100CDFD08 /* AwesomeCache-OS X */ = {
+			isa = PBXGroup;
+			children = (
+				551B985E1E7E3C3100CDFD08 /* AwesomeCache-OS X.h */,
+				551B985F1E7E3C3100CDFD08 /* Info.plist */,
+			);
+			path = "AwesomeCache-OS X";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -242,6 +267,14 @@
 			files = (
 				4DC91F9D1A7C54B200C81E10 /* AwesomeCache.h in Headers */,
 				BF482C3D1CEBE4A2002B0C32 /* NSKeyedUnarchiverWrapper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		551B98591E7E3C3100CDFD08 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				551B98601E7E3C3100CDFD08 /* AwesomeCache-OS X.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +373,24 @@
 			productReference = 4DC91FA21A7C54B200C81E10 /* AwesomeCacheTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		551B985B1E7E3C3100CDFD08 /* AwesomeCache-OS X */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 551B98631E7E3C3100CDFD08 /* Build configuration list for PBXNativeTarget "AwesomeCache-OS X" */;
+			buildPhases = (
+				551B98571E7E3C3100CDFD08 /* Sources */,
+				551B98581E7E3C3100CDFD08 /* Frameworks */,
+				551B98591E7E3C3100CDFD08 /* Headers */,
+				551B985A1E7E3C3100CDFD08 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AwesomeCache-OS X";
+			productName = "AwesomeCache-OS X";
+			productReference = 551B985C1E7E3C3100CDFD08 /* AwesomeCache.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -370,6 +421,11 @@
 						LastSwiftMigration = 0800;
 						TestTargetID = 4D44D2861971627700EC5FDB;
 					};
+					551B985B1E7E3C3100CDFD08 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 5L9DL58E3J;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 4D44D2821971627700EC5FDB /* Build configuration list for PBXProject "Example" */;
@@ -377,6 +433,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -390,6 +447,7 @@
 				4DC91FA11A7C54B200C81E10 /* AwesomeCacheTests */,
 				4D81D4811C416F3C009A66A7 /* AwesomeCache-watchOS */,
 				4D81D48E1C416F6F009A66A7 /* AwesomeCache-tvOS */,
+				551B985B1E7E3C3100CDFD08 /* AwesomeCache-OS X */,
 			);
 		};
 /* End PBXProject section */
@@ -427,6 +485,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4DC91FA01A7C54B200C81E10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		551B985A1E7E3C3100CDFD08 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -480,6 +545,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DC91FAC1A7C54B200C81E10 /* AwesomeCacheTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		551B98571E7E3C3100CDFD08 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F331A21E7F4E2A00EAFD68 /* Cache.swift in Sources */,
+				55F331A31E7F4E3400EAFD68 /* CacheObject.swift in Sources */,
+				55F331A41E7F4E3600EAFD68 /* NSKeyedUnarchiverWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,7 +696,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -634,7 +709,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -659,6 +734,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -687,6 +763,7 @@
 				PRODUCT_NAME = AwesomeCache;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -712,6 +789,7 @@
 				PRODUCT_NAME = AwesomeCache;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -738,6 +816,7 @@
 				PRODUCT_NAME = AwesomeCache;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -767,7 +846,7 @@
 				PRODUCT_NAME = AwesomeCache;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -792,7 +871,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AwesomeCache;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -812,7 +891,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Debug;
@@ -827,8 +906,70 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
+			};
+			name = Release;
+		};
+		551B98611E7E3C3100CDFD08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5L9DL58E3J;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = AwesomeCache/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.AwesomeCache-OSX";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = AwesomeCache;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		551B98621E7E3C3100CDFD08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 5L9DL58E3J;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = AwesomeCache/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aschuch.AwesomeCache-OSX";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
+				PRODUCT_NAME = AwesomeCache;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -885,6 +1026,15 @@
 			buildConfigurations = (
 				4DC91FB31A7C54B200C81E10 /* Debug */,
 				4DC91FB41A7C54B200C81E10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		551B98631E7E3C3100CDFD08 /* Build configuration list for PBXNativeTarget "AwesomeCache-OS X" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				551B98611E7E3C3100CDFD08 /* Debug */,
+				551B98621E7E3C3100CDFD08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

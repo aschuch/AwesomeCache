@@ -235,11 +235,15 @@ open class Cache<T: NSCoding> {
 
         // Otherwise, read from disk
         let path = urlForKey(key).path
-        if fileManager.fileExists(atPath: path) {
-            return _awesomeCache_unarchiveObjectSafely(path) as? CacheObject
+        guard
+            fileManager.fileExists(atPath: path),
+            let object = _awesomeCache_unarchiveObjectSafely(path) as? CacheObject  else {
+            return nil
         }
-
-        return nil
+        
+        // Keep in memory:
+        cache.setObject(object, forKey: key as NSString)
+        return object
     }
 
     // Deletes an object from disk

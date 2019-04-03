@@ -30,6 +30,21 @@ class AwesomeCacheTests: XCTestCase {
         XCTAssertNotNil(cache.object(forKey: "add"), "Added object should not be nil")
         XCTAssertEqual("AddedString", cache.object(forKey: "add")!, "Fetched object should be equal to the inserted object")
     }
+    
+    func testObjectIsRetainedInMemoryWhenLoadedFromDisk() {
+        let cache = try! Cache<NSString>(name: "testObjectMemoryRetention")
+        
+        //Add to cache, both in-memory and on-disk:
+        cache.setObject("AddedString", forKey: "add")
+        
+        //purge in-memory cache
+        cache.cache.removeAllObjects()
+        
+        //load from disk
+        _ = cache.object(forKey: "add")
+        
+        XCTAssertTrue(cache.isOnMemory(forKey: "add"), "Cached object should be loaded from disk and retained in memory")
+    }
 
     func testGetExpiredObjectIfPresent() {
         let cache = try! Cache<NSString>(name: "testGetExpiredObject")
